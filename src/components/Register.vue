@@ -16,9 +16,11 @@
 		        <hr>
 		        <div class="signIn">
 		        	have an account yet?<br/>
-		            <a href="#" @click="signIn">
-		                sign in here
-		            </a>
+		        	<router-link to="/login">
+			            <a href="#" @click="signIn">
+			                sign in here
+			            </a>
+			        </router-link>
 		        </div>
 			</div>	
 		</div>	 	
@@ -27,7 +29,6 @@
 
 <script>
 	export default {
-		name : 'register',
 		data () {
 			return {
 				useId : '',

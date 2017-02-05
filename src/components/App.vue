@@ -1,7 +1,9 @@
 <template>
     <!--photo></photo-->
-    <gallery></gallery>
-    <!--description></description-->
+    <transition mode="out-in">
+        <router-view></router-view>
+    </transition>
+
     <!--div>
       <button @click="change">Change</button>
       <component :is="currentView"></component>
@@ -11,7 +13,6 @@
 
 <script>
     import Photo from './Photo.vue'
-    import Description from './Description.vue'
     import Login from './Login.vue'
     import Register from './Register.vue'
     import Gallery from './Gallery.vue'
@@ -20,7 +21,6 @@
         name: 'app',
         components : {
             Photo,
-            Description,
             Login,
             Register,
             Gallery
@@ -42,5 +42,9 @@
     * {
         margin: 0;
         padding: 0;
+    }
+
+    a {
+        text-decoration:none;
     }
 </style>

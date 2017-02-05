@@ -7,14 +7,16 @@
 			<div class="wrap">
 			    <input type="text" placeholder="User ID" autofocus v-model="useId">
 			    <input type="password" placeholder="Password" v-model="passWord">
-		        <p class="right" @click="visitorIn">as a visitor?</p>
-		        <button @click="signIn()"><i class="fa fa-lock"></i> SIGN IN</button>
+		        <router-link to="/"><p class="right" @click="visitorIn">as a visitor?</p></router-link>
+		        <button @click="signIn"><i class="fa fa-lock"></i> SIGN IN</button>
 		        <hr>
 		        <div class="registration">
 		        	Don't have an account yet?<br/>
-		            <a href="#" @click="createId">
-		                Create an account
-		            </a>
+		        	<router-link to="/register">
+			            <a href="#" @click="createId">
+			                Create an account
+			            </a>
+			        </router-link>
 		        </div>
 			</div>	
 		</div>	 	
@@ -23,7 +25,6 @@
 
 <script>
 	export default {
-		name : 'login',
 		data () {
 			return {
 				useId : '',
@@ -32,7 +33,8 @@
 		},
 		methods: {
 			signIn : function() {
-				console.log(this.useId + ' ' + this.passWord);
+				//console.log(this.useId + ' ' + this.passWord);
+				this.$router.push('/');
 			},
 			visitorIn : function() {
 				console.log('游客登陆');

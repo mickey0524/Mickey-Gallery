@@ -13,6 +13,9 @@
 	color: #FFF;
 	border-bottom: 1px solid #C9AA5F;
 }
+.nav h2 {
+	line-height: 60px;
+}
 .nav .avatar, .nav .mes, .nav button, .nav h2 {
 	display: inline-block;
 }
@@ -101,6 +104,25 @@
   text-indent: 1em;
   line-height: 30px;
   cursor: pointer;
+}
+
+.nav .front-back {
+	display: inline-block;
+	margin-left: 10px;
+	line-height: 60px;
+}
+
+.nav .front-back i {
+	cursor: pointer;
+	width: 30px;
+	font-size: 20px;
+	transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+}
+
+.nav .front-back i:hover {
+	font-size: 30px;
 }
 
 .badge {

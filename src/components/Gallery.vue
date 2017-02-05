@@ -2,10 +2,10 @@
 	<div class="gallery-container">
 		<div class="nav">
 			<h2>Mickey Gallery</h2>
-			<div class="avatar">
-				<img src="../assets/avatar01.jpg" width="40px" height="40px">
+			<div class="avatar" v-if="isLogin">
+				<router-link to="/introduction/1"><img src="../assets/avatar01.jpg" width="40px" height="40px"></router-link>
 			</div>
-			<div class="mes"> 
+			<div class="mes" v-if="isLogin"> 
 				<i class="fa fa-envelope-o" @click="openMesBox"></i>
 			</div>
 			<div class="mes-box" v-show="mesBox">
@@ -26,12 +26,16 @@
 					See more messages
 				</div>
 			</div>
-			<span class="badge" @click="openMesBox">{{ mesNum }}</span>
-			<button>Logout</button>
+			<span class="badge" @click="openMesBox" v-if="isLogin">{{ mesNum }}</span>
+			<div class="front-back">
+				<i class="fa fa-arrow-left" @click="$router.go(-1)"></i>
+				<i class="fa fa-arrow-right" @click="$router.go(1)"></i>
+			</div>
+			<router-link to="/login"><button v-if="!isLogin">Login</button></router-link>
+			<button v-if="isLogin">Unlogin</button>
 		</div>
 		<div class="gallery-wrap">
-			<!--photo :img-width="imgWidth" :img-height="imgHeight"></photo-->
-			<introduction></introduction>
+			<router-view></router-view>
 		</div>
 	</div>
 </template>
@@ -40,17 +44,15 @@
 	import Photo from './Photo.vue'
 	import Introduction from './Introduction.vue'
 	export default {
-		name : 'gallery',
 		components : {
 			Photo,
 			Introduction
 		},
 		data () {
 			return {
+				isLogin : true,
 				mesBox : false,
 				mesNum : 5,
-				imgWidth : '300px',
-				imgHeight : '200px',
 				message: [
 					{
 						useName : 'Zac Snider',
