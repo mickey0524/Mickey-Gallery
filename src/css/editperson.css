@@ -1,0 +1,111 @@
+.person-mask {
+  position: fixed;
+  z-index: 9998;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, .5);
+  display: table;
+  transition: opacity .3s ease;
+}
+
+.person-wrapper {
+  display: table-cell;
+  vertical-align: middle;
+}
+
+.person-container {
+  width: 300px;
+  margin: 0px auto;
+  padding: 20px 30px;
+  background-color: #fff;
+  border-radius: 2px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .33);
+  transition: all .3s ease;
+  font-family: Helvetica, Arial, sans-serif;
+}
+
+.person-header h3 {
+  margin-top: 0;
+  color: #42b983;
+}
+
+.person-body {
+  margin: 10px 0 40px 0;
+}
+
+.person-button {
+  width: 50px;
+  float: right;
+  position: relative;
+  top: -20px;
+  border: 1px solid #64C3C2;
+  border-radius: 3px;
+  height: 30px;
+  margin-left: 20px; 
+  cursor: pointer;
+  transition: all .4s ease-in-out;
+  -webkit-transition: all .4s ease-in-out;
+  -moz-transition: all .4s ease-in-out;
+}
+
+.person-button:first-of-type {
+  background: #FFF;
+  color: #68DFF0;
+}
+
+.person-button:last-of-type {
+  background: #68DFF0;
+  color: #FFF;
+}
+
+.person-button:first-of-type:hover {
+	background: #68DFF0;
+  color: #FFF;
+}
+
+.person-button:last-of-type:hover {
+  background: #FFF;
+  color: #68DFF0;
+}
+
+.person-container hr {
+	margin-top: 10px;
+}
+
+.person-body .person-item {
+	display: block;
+	padding: 5px;
+}
+
+.person-body .person-item input {
+	width : 80%;
+	height : 30px;
+	padding-left: 5px;
+	border: 1px solid #CCCCCC;
+	border-radius: 3px;
+}
+
+/*
+ * The following styles are auto-applied to elements with
+ * transition="modal" when their visibility is toggled
+ * by Vue.js.
+ *
+ * You can easily play with the modal transition by editing
+ * these styles.
+ */
+
+.person-enter {
+  opacity: 0;
+}
+
+.person-leave-active {
+  opacity: 0;
+}
+
+.person-enter .person-container,
+.person-leave-active .person-container {
+  -webkit-transform: scale(1.1);
+  transform: scale(1.1);
+}

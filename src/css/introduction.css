@@ -1,0 +1,110 @@
+.introduction-container {
+	width: 75%;
+	color: #797979;
+	display: inline-block;
+}
+.introduction-container .big-avatar, .introduction-container .introduction-mes {
+	display: inline-block;
+	vertical-align: top;
+}
+.introduction-container .introduction-mes {
+	width: 78%;
+}
+.introduction-container .big-avatar {
+	margin-right: 20px;
+}
+.introduction-container .name {
+	font-size: 22px;
+	margin-right: 10px;
+}
+.introduction-container .fa-male {
+	color: #134862;
+	font-size: 20px;
+}
+.introduction-container .fa-female {
+	color: #A56A99;
+	font-size: 20px;
+}
+.introduction-mes .edit-introduction {
+	float: right;
+	width: 100px;
+	background: #68DFF0;
+	border: 1px solid #64C3C2;
+	border-radius: 3px;
+	color: #FFF;
+	height: 30px;
+	cursor: pointer;
+	transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+}
+.introduction-mes .edit-introduction:hover {
+	background: #64C3C2;
+}
+.introduction-mes hr {
+	width: 100%;
+	margin-top: 10px;
+}
+.attention-fans .attention-fans-block {
+	display: inline-block;
+	text-align: center;
+	width: 60px;
+	font-size: 18px;
+	cursor: pointer;
+	margin-top: 10px;
+	margin-bottom: 10px;
+	border-right: 1px solid #9A9A9A;
+}
+.attention-fans .attention-fans-block p:first-of-type {
+	color: #000;
+}
+.attention-fans .attention-fans-block:last-of-type {
+	border-right: none;
+}
+.other-mes {
+	padding-bottom: 10px;
+}
+.other-mes-block span {
+	color: #000;
+}
+.notifications {
+	display: inline-block;
+	width: 23%;
+	vertical-align: top;
+	padding: 10px;
+}
+.notifications h3 {
+	color: #FFF;
+	background: #FF865C;
+	text-align: center;
+	height: 50px;
+	line-height: 50px;
+}
+.notifications .notification-item {
+	padding: 10px;
+	border-bottom: 1px solid #CCCCCC;
+}
+.notifications .notification-item img {
+	border-radius: 100%;
+	cursor: pointer;
+}
+.notifications .notification-item .notification-avatar, .notifications .notification-item .notification-mes {
+	display: inline-block;
+	vertical-align: top;
+}
+.notification-avatar {
+	width: 40px;
+	margin-right: 5px;
+}
+.notification-mes {
+	width: calc(100% - 50px);
+}
+.notification-mes p:first-child {
+	color: #6A6666;
+	font-style: italic;
+}
+.notification-mes p:last-child {
+	color: #000;
+	word-break: normal;
+	word-wrap: break-word;
+}

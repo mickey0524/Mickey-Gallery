@@ -1,0 +1,90 @@
+@import url(http://fonts.googleapis.com/css?family=Ruda:400,700,900);
+.page {
+	background: url("../assets/login.jpg") no-repeat;
+	background-size: cover;
+	position: absolute;
+	left: 0;
+	top: 0;
+	width: 100%;
+	height: 100%;
+	z-index: -1;
+	font-family: 'Ruda', 'Microsoft Yahei', 'Arial', sans-serif;
+}
+.container {
+	position: absolute;
+	left: 50%;
+	top: 50%;
+	transform: translate(-50%, -50%);
+	width: 330px;
+	height: 350px;
+	min-width: 100px;
+	background: #FFF;
+	border: 1px solid #DCDCDC;
+	border-radius: 4px;
+}
+.register {
+	height: 520px;
+}
+.title {
+	background: #68DFF0;
+	height: 70px;
+	text-align: center;
+	line-height: 70px;
+	color: #FFF;
+}
+.wrap {
+	padding: 20px;
+}
+.wrap input {
+	width: 100%;
+	border: 0;
+	outline: 0;
+	margin-bottom: 15px;
+	height: 30px;
+	text-indent: 1em;
+	border: 1px solid #DCDCDC;
+	border-radius: 5px;
+	color: #6A7484;
+	transition: all .4s ease-in-out;
+	-webkit-transition: all .4s ease-in-out;
+	-moz-transition: all .4s ease-in-out;
+}
+.wrap input:focus {
+	border: 1px solid #68DFF0;
+}
+.wrap .right {
+	display: block;
+	position: relative;
+	left: 70%;
+	color: #6BAFE1;
+	cursor: pointer;
+	margin-bottom: 10px;
+}
+.wrap .right:hover {
+	color: #5193EA;
+}
+.wrap button {
+	display: block;
+	background: #68DFF0;
+	color: #FFF;
+	border: 0;
+	outline: 0;
+	width: 100%;
+	height: 33px;
+	border: 1px solid #48BCB4;
+	border-radius: 3px;
+	margin-bottom: 20px;
+	cursor: pointer;
+}
+.wrap button:hover {
+	background: #48BCB4;
+}
+.wrap .registration, .wrap .signIn {
+	margin-top: 10px;
+	text-align: center;
+	color: #6A7484;
+}
+.wrap .registration a, .wrap .signIn a {
+	color: #5193EA;
+	text-decoration: none;
+}
