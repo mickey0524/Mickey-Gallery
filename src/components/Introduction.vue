@@ -90,7 +90,7 @@
 					{
 						avatar : require("../assets/avatar03.jpg"),
 						name: 'Roger',
-						signature : '奇怪的感觉asdasdasdasdasdasdasaasdasaasasdasdasdda',
+						signature : '奇怪的感觉',
 						attentionNum : 9,
 						fansNum : 6,
 						isAttention : false

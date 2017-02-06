@@ -8,7 +8,7 @@
 			<div class="mes" v-if="isLogin"> 
 				<i class="fa fa-envelope-o" @click="openMesBox"></i>
 			</div>
-			<div class="mes-box" v-show="mesBox">
+			<div class="mes-box" v-show="mesBox">	
 				<div class="mes-title">
 					<h4>You have {{ mesNum }} new messages</h4>
 				</div>

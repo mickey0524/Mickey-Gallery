@@ -83,8 +83,17 @@
 	width : 80%;
 	height : 30px;
 	padding-left: 5px;
+  border: 0;
+  outline: 0;
 	border: 1px solid #CCCCCC;
 	border-radius: 3px;
+  transition: all .4s ease;
+  -webkit-transition: all .4s ease;
+  -moz-transition: all .4s ease;
+}
+
+.person-body .person-item input:focus {
+  border-color: #68DFF0;
 }
 
 /*

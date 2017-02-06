@@ -30,7 +30,6 @@
 <script>
   import Detail from './Detail.vue'
   export default {
-    name: 'photo',
     props : ['imgWidth', 'imgHeight'],
     components : {
       Detail
@@ -42,7 +41,7 @@
           {
             photoId : '1',
             address : require('../assets/port01.jpg'),
-            indexAddress : './src/assets/port01.jpg',
+            indexAddress : '/src/assets/port01.jpg',
             like : false,
             likeNum : 123,
             commentNum : 123
@@ -50,7 +49,7 @@
           {
             photoId : '2',
             address : require('../assets/port02.jpg'),
-            indexAddress : './src/assets/port02.jpg',
+            indexAddress : '/src/assets/port02.jpg',
             like : false,
             likeNum : 123,
             commentNum : 123
@@ -58,7 +57,7 @@
           {
             photoId : '3',
             address : require('../assets/port03.jpg'),
-            indexAddress : './src/assets/port03.jpg',
+            indexAddress : '/src/assets/port03.jpg',
             like : false,
             likeNum : 123,
             commentNum : 123
@@ -66,7 +65,7 @@
           {
             photoId : '4',
             address : require('../assets/port04.jpg'),
-            indexAddress : './src/assets/port04.jpg',
+            indexAddress : '/src/assets/port04.jpg',
             like : false,
             likeNum : 123,
             commentNum : 123
@@ -74,7 +73,7 @@
           {
             photoId : '5',  
             address : require('../assets/port05.jpg'),
-            indexAddress : './src/assets/port05.jpg',
+            indexAddress : '/src/assets/port05.jpg',
             like : false,
             likeNum : 123,
             commentNum : 123
@@ -82,7 +81,7 @@
           {
             photoId : '6',
             address : require('../assets/port06.jpg'),
-            indexAddress : './src/assets/port06.jpg',
+            indexAddress : '/src/assets/port06.jpg',
             like : false,
             likeNum : 123,
             commentNum : 123
@@ -114,10 +113,20 @@
   * {
     font-family: 'Ruda', 'Microsoft Yahei', 'Arial', sans-serif;
   }
+  .photo-container {
+    text-align: center;
+  }
+  .gallery-title {
+    text-align: left;
+  }
   #photo ul li {
     display: inline-block;
     list-style: none;
     margin: 10px;
+  }
+  .operation {
+    text-align: left;
+    color: #000;
   }
   .operation i {
     cursor : pointer;

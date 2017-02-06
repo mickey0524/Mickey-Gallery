@@ -41,6 +41,7 @@
 		},
 		methods : {
 			visitorIn : function() {
+				this.$router.push("/");
 				console.log('游客登陆');
 			},
 			register : function() {

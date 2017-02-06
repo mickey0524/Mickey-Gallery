@@ -13,6 +13,9 @@
 .introduction-container .big-avatar {
 	margin-right: 20px;
 }
+.introduction-container .big-avatar img {
+	border-radius: 5px;		
+}
 .introduction-container .name {
 	font-size: 22px;
 	margin-right: 10px;
