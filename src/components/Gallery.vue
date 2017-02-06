@@ -31,11 +31,13 @@
 				<i class="fa fa-arrow-left" @click="$router.go(-1)"></i>
 				<i class="fa fa-arrow-right" @click="$router.go(1)"></i>
 			</div>
-			<router-link to="/login"><button v-if="!isLogin">Login</button></router-link>
-			<button v-if="isLogin">Unlogin</button>
+			<router-link to="/login"><button v-if="isLogin">Login</button></router-link>
+			<button v-if="!isLogin">Unlogin</button>
 		</div>
 		<div class="gallery-wrap">
-			<router-view></router-view>
+			<transition mode="out-in" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutRight">
+				<router-view></router-view>
+			</transition>
 		</div>
 	</div>
 </template>
@@ -90,6 +92,7 @@
 </script>
 
 <style>
+  @import url("../css/animate.css");
   @import url("../css/font-awesome.min.css");
   @import url("../css/gallery.css");
 </style>

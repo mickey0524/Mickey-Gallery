@@ -1,6 +1,6 @@
 <template>
     <!--photo></photo-->
-    <transition mode="out-in">
+    <transition mode="out-in" enter-active-class="animated bounceIn" leave-active-class="animated bounceOut">
         <router-view></router-view>
     </transition>
 
@@ -39,6 +39,7 @@
 </script>
 
 <style>
+    @import url("../css/animate.css");
     * {
         margin: 0;
         padding: 0;
