@@ -21,5 +21,6 @@ export default new VueRouter({
 		{ path : '/login', component : Login },
 		{ path : '/register', component : Register },
 		{ path : '*', redirect : '/' }
-	]
+	],
+	scrollBehavior: (to, from, savedPosition) => ({ x: 0, y: 0 })
 })
