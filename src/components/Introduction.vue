@@ -30,7 +30,7 @@
 					</div>
 				</div>
 				<div class="like-photo">
-					<photo :img-width="imgWidth" :img-height="imgHeight"></photo>
+					<photo :img-width="imgWidth" :img-height="imgHeight" @routeToIntroduction="toIntroduction"></photo>
 				</div>
 			</div>
 		</div>
@@ -38,7 +38,7 @@
 			<h3>NOTIFICATIONS</h3>
 			<div class="notification-item" v-for="item in notifications">
 				<div class="notification-avatar">
-					<img :src="item.avatar" width="40px" height="40px">
+					<img :src="item.avatar" width="40px" height="40px" @click="$router.push('/introduction/3')">
 				</div>
 				<div class="notification-mes">
 					<p>{{ item.time }}</p>
@@ -141,7 +141,13 @@
 			openAttention : function() {
 				this.modalTitle = '飒然风影的关注';
 				this.showModal = true;
+			},
+			toIntroduction : function() {
+				this.$router.push("/introduction/1");
 			}
+		},
+		created : function() {
+			console.log(this.$route.params.id);
 		}
 	}
 </script>

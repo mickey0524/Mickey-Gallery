@@ -1,4 +1,3 @@
-
 <template>
   <div class="photo-container">
     <div class="gallery-title">
@@ -23,7 +22,7 @@
         </li>
       </ul>
     </div>
-    <detail v-if="showDetail" @close="showDetail = false"></detail>
+    <detail v-if="showDetail" @close="showDetail = false" @routeToIntroduction="routeToIntroduction"></detail>
   </div>
 </template>
 
@@ -101,6 +100,10 @@
       },
       openDetail : function() {
         this.showDetail = true;
+      },
+      routeToIntroduction: function() {
+        this.showDetail = false;
+        this.$emit('routeToIntroduction');
       }
     }
   }

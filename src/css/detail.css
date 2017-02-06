@@ -68,7 +68,10 @@
 	width: 40px;
 }
 .comment-content {
+  box-sizing: border-box;
+  padding-left: 10px; 
 	width: calc(100% - 50px);
+  text-align: left;
 }
 
 .comment-avatar img {

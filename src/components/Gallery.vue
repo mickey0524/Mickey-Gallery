@@ -14,7 +14,7 @@
 				</div>
 				<div v-for="item in message" class="mes-item">
 					<div class="mes-avatar">
-						<img :src="item.avatar" width="40px" height="40px">
+						<img :src="item.avatar" width="40px" height="40px" @click="toIntroduction">
 					</div>
 					<div class="mes-content">
 						<span><strong>{{ item.useName }}</strong></span>
@@ -36,7 +36,7 @@
 		</div>
 		<div class="gallery-wrap">
 			<transition mode="out-in" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutRight">
-				<router-view></router-view>
+				<router-view @routeToIntroduction="toIntroduction"></router-view>
 			</transition>
 		</div>
 	</div>
@@ -86,6 +86,10 @@
 		methods : {
 			openMesBox : function() {
 				this.mesBox = !this.mesBox;
+			},
+			toIntroduction : function() {
+				this.mesBox = false;
+				this.$router.push("/introduction/2");
 			}
 		}
 	}
