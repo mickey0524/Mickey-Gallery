@@ -8,7 +8,7 @@
 					</div>
 					<div class="detail-body">
 						<div class="detail-img">
-							<img src="../assets/port01.jpg" width="150px" height="150px" v-bind:style="{ transform: 'rotate(' + rotateAngle + 'deg)' }">
+							<img src="../assets/port1.jpg" width="150px" height="150px" v-bind:style="{ transform: 'rotate(' + rotateAngle + 'deg)' }">
 						</div>
 						<hr>
 						<div class="detail-comments">
@@ -47,7 +47,7 @@
 				rotateAngle : 0,
 				comments : [
 					{
-						avatar : require("../assets/avatar01.jpg"),
+						avatar : require("../assets/avatar1.jpg"),
 						name : '飒然风影',
 						time : '2 MINUTES AGO',
 						content : '我喜欢你'

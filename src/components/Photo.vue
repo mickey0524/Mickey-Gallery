@@ -6,7 +6,7 @@
     <hr>
     <div id="photo">
       <ul>
-        <li v-for="(photo, index) in photoContent">
+        <li v-for="(photo, index) in photoMes">
           <figure class="photo-item">
             <a class="fancybox" :href="photo.indexAddress">
               <img :src="photo.address" :width="imgWidth" :height="imgHeight">
@@ -14,9 +14,9 @@
             <div class="operation">
               <i class="fa fa-heart" @click="addLike(index)" v-if="photo.like"></i>
               <i class="fa fa-heart-o" @click="addLike(index)" v-else></i>
-              <span><strong>{{ photo.likeNum }}</strong> Likes<span>
+              <span><strong>{{ photo.photoLike }}</strong> Likes<span>
               <i class="fa fa-commenting-o" @click="openDetail"></i>
-              <span @click="openDetail"><strong>{{ photo.commentNum }}</strong> Comments<span>
+              <span @click="openDetail"><strong>{{ photo.photoComment }}</strong> Comments<span>
             </div>
           </figure>
         </li>
@@ -33,70 +33,58 @@
     components : {
       Detail
     },
+    mounted : function() {
+      var resource_1 = this.$resource('http://localhost:3000/getPhoto');
+      var _this = this;
+      resource_1.get().then((response) => {
+        _this.photoMes = response.body.photo;
+        for(var i in _this.photoMes) {
+          _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
+          _this.photoMes[i].indexAddress = '/src/assets/port' + _this.photoMes[i].photoId + '.jpg';
+          _this.photoMes[i].like = false;
+          _this.photoMes[i].photoLike = Number(_this.photoMes[i].photoLike);
+          _this.photoMes[i].photoComment = Number(_this.photoMes[i].photoComment);
+        }
+      })
+      .catch((response) => {
+        console.log('err ' + response);
+      })     
+    },
     data () {
       return {
         showDetail : false,
-        photoContent : [
-          {
-            photoId : '1',
-            address : require('../assets/port01.jpg'),
-            indexAddress : '/src/assets/port01.jpg',
-            like : false,
-            likeNum : 123,
-            commentNum : 123
-          },
-          {
-            photoId : '2',
-            address : require('../assets/port02.jpg'),
-            indexAddress : '/src/assets/port02.jpg',
-            like : false,
-            likeNum : 123,
-            commentNum : 123
-          },
-          {
-            photoId : '3',
-            address : require('../assets/port03.jpg'),
-            indexAddress : '/src/assets/port03.jpg',
-            like : false,
-            likeNum : 123,
-            commentNum : 123
-          },
-          {
-            photoId : '4',
-            address : require('../assets/port04.jpg'),
-            indexAddress : '/src/assets/port04.jpg',
-            like : false,
-            likeNum : 123,
-            commentNum : 123
-          },
-          {
-            photoId : '5',  
-            address : require('../assets/port05.jpg'),
-            indexAddress : '/src/assets/port05.jpg',
-            like : false,
-            likeNum : 123,
-            commentNum : 123
-          },
-          {
-            photoId : '6',
-            address : require('../assets/port06.jpg'),
-            indexAddress : '/src/assets/port06.jpg',
-            like : false,
-            likeNum : 123,
-            commentNum : 123
-          }
+        photoMes : [
+          
+          // {
+          //   photoId : '6',
+          //   address : require('../assets/port06.jpg'),
+          //   indexAddress : '/src/assets/port06.jpg',
+          //   like : false,
+          //   likeNum : 123,
+          //   commentNum : 123
+          // }
         ]
       };
     },
     methods : {
       addLike : function(index) {
-        if(this.photoContent[index].like) {
-          this.photoContent[index].likeNum -= 1;
+        if(this.photoMes[index].like) {
+          this.photoMes[index].photoLike -= 1;
         }
         else {
-          this.photoContent[index].likeNum += 1;
+          this.photoMes[index].photoLike += 1;
         }
-        this.photoContent[index].like = !this.photoContent[index].like;
+        var resource = this.$resource('http://localhost:3000/changeLikeNum');
+        var params = {id : this.photoMes[index].photoId, likeNum : this.photoMes[index].photoLike};
+        resource.save(params).then((response) => {
+          if(response.body.code != 200) {
+            alert(response.body.description);
+          }
+        })
+        .catch((response) => {
+          console.log('err ' + response);
+        })
+        this.photoMes[index].like = !this.photoMes[index].like;
       },
       openDetail : function() {
         this.showDetail = true;

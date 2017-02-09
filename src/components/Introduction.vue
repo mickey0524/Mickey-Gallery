@@ -2,7 +2,7 @@
 	<div>
 		<div class="introduction-container">
 			<div class="big-avatar">
-				<img src="../assets/avatar01.jpg" width="160px" height="160px">
+				<img src="../assets/avatar1.jpg" width="160px" height="160px">
 			</div>
 			<div class="introduction-mes">
 				<span class="name">飒然风影</span>
@@ -72,7 +72,7 @@
 				modalTitle : '飒然风影的关注',
 				modalBody : [
 					{
-						avatar : require("../assets/avatar01.jpg"),
+						avatar : require("../assets/avatar1.jpg"),
 						name: 'Roger',
 						signature : '奇怪的感觉asdasda',
 						attentionNum : 9,
@@ -80,7 +80,7 @@
 						isAttention : false
 					},
 					{
-						avatar : require("../assets/avatar02.jpg"),
+						avatar : require("../assets/avatar2.jpg"),
 						name: 'Baihao',
 						signature : '半世浮萍随逝水~',
 						attentionNum : 5,
@@ -88,7 +88,7 @@
 						isAttention : false						
 					},
 					{
-						avatar : require("../assets/avatar03.jpg"),
+						avatar : require("../assets/avatar3.jpg"),
 						name: 'Roger',
 						signature : '奇怪的感觉',
 						attentionNum : 9,
@@ -96,7 +96,7 @@
 						isAttention : false
 					},
 					{
-						avatar : require("../assets/avatar04.jpg"),
+						avatar : require("../assets/avatar4.jpg"),
 						name: 'Baihao',
 						signature : '半世浮萍随逝水~',
 						attentionNum : 5,
@@ -106,27 +106,27 @@
 				],
 				notifications : [
 					{
-						avatar : require('../assets/avatar01.jpg'),
+						avatar : require('../assets/avatar1.jpg'),
 						time : '2 MINUTES AGO',
 						content : 'James Brown subscribed to your newsletter.'
 					},
 					{
-						avatar : require('../assets/avatar02.jpg'),
+						avatar : require('../assets/avatar2.jpg'),
 						time : '3 HOURS AGO',
 						content : 'Diana Kennedy purchased a year subscription.'						
 					},
 					{
-						avatar : require('../assets/avatar03.jpg'),
+						avatar : require('../assets/avatar3.jpg'),
 						time : '7 HOURS AGO',
 						content : 'Brandon Page purchased a year subscription.'						
 					},
 					{
-						avatar : require('../assets/avatar04.jpg'),
+						avatar : require('../assets/avatar4.jpg'),
 						time : '11 HOURS AGO',
 						content : 'Mark Twain commented your post.'						
 					},
 					{
-						avatar : require('../assets/avatar05.jpg'),
+						avatar : require('../assets/avatar5.jpg'),
 						time : '18 HOURS AGO',
 						content : 'Daniel Pratt purchased a wallet in your store.'							
 					}

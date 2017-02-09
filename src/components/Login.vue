@@ -5,9 +5,9 @@
 				<h2>sign in now</h2>
 			</div>
 			<div class="wrap">
-			    <input type="text" placeholder="User ID" autofocus v-model="useId">
+			    <input type="text" placeholder="User ID" autofocus v-model="userId">
 			    <input type="password" placeholder="Password" v-model="passWord">
-		        <router-link to="/"><p class="right" @click="visitorIn">as a visitor?</p></router-link>
+		        <router-link to="/gallery/visitor"><p class="right" @click="visitorIn">as a visitor?</p></router-link>
 		        <button @click="signIn"><i class="fa fa-lock"></i> SIGN IN</button>
 		        <hr>
 		        <div class="registration">
@@ -27,14 +27,28 @@
 	export default {
 		data () {
 			return {
-				useId : '',
+				userId : '',
 				passWord : ''
 			}
 		},
 		methods: {
 			signIn : function() {
-				//console.log(this.useId + ' ' + this.passWord);
-				this.$router.push('/');
+				var _this = this;
+				var param = {userId : this.userId, passWord : this.passWord};
+				var resource = this.$resource('http://localhost:3000/judgeLanding');
+				resource.save(param).then((response) => {
+					if(response.body.code == 200) {
+						this.$router.push('/gallery/' + _this.userId);
+					}
+					else {
+						alert(response.body.description);
+						_this.userId = '';
+						_this.passWord = '';
+					}
+				})
+				.catch(function(response) {
+					console.log('err' + response)
+				})
 			},
 			visitorIn : function() {
 				console.log('游客登陆');

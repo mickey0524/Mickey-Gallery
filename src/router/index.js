@@ -12,15 +12,15 @@ import Photo from '../components/Photo.vue'
 export default new VueRouter({
 	mode : 'history',
 	routes : [
-		{ path : '/', component: Gallery, 
+		{ path : '/gallery/:userId', component: Gallery, 
 		  children : [
 		  	{ path : '', component : Photo },
-		  	{ path : 'introduction/:id', component : Introduction }
+		  	{ path : 'introduction/:introductionId', component : Introduction }
 		  ]
 		},
 		{ path : '/login', component : Login },
 		{ path : '/register', component : Register },
-		{ path : '*', redirect : '/' }
+		{ path : '*', redirect : '/gallery/visitor' }
 	],
 	scrollBehavior: (to, from, savedPosition) => ({ x: 0, y: 0 })
 })
