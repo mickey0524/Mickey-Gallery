@@ -34,27 +34,41 @@
       Detail
     },
     mounted : function() {
-      var resource_1 = this.$resource('http://localhost:3000/getPhoto');
-      var _this = this;
-      resource_1.get().then((response) => {
-        _this.photoMes = response.body.photo;
-        for(var i in _this.photoMes) {
-          _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
-          _this.photoMes[i].indexAddress = '/src/assets/port' + _this.photoMes[i].photoId + '.jpg';
-          _this.photoMes[i].like = false;
-          _this.photoMes[i].photoLike = Number(_this.photoMes[i].photoLike);
-          _this.photoMes[i].photoComment = Number(_this.photoMes[i].photoComment);
-        }
-      })
-      .catch((response) => {
-        console.log('err ' + response);
-      })     
+       var _this = this;
+      // this.$nextTick(() => {
+        var resource = this.$resource('http://localhost:3000/getPhoto');
+        resource.get().then((response) => {
+          _this.photoMes = response.body.photo;
+          for(var i in _this.photoMes) {
+            _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
+            _this.photoMes[i].indexAddress = '/src/assets/port' + _this.photoMes[i].photoId + '.jpg';
+            _this.photoMes[i].like = false;
+            _this.photoMes[i].photoLike = Number(_this.photoMes[i].photoLike);
+            _this.photoMes[i].photoComment = Number(_this.photoMes[i].photoComment);
+          }
+        })
+        .catch((response) => {
+          console.log('err ' + response);
+        })    
+        if(this.$route.params.userId !== 'visitor') {
+          var resource_1 = this.$resource('http://localhost:3000/getLikePhoto');
+          resource_1.save({userId : this.$route.params.userId}).then((response) => {
+            for(var i in _this.photoMes) {
+              if(response.body.photo.indexOf(_this.photoMes[i].photoId) != -1) {
+                _this.photoMes[i].like = true;
+              }
+            }
+          })
+          .catch((response) => {
+            console.log('err ' + response);
+          })       
+        }         
+      // })
     },
     data () {
       return {
         showDetail : false,
-        photoMes : [
-          
+        photoMes : [      
           // {
           //   photoId : '6',
           //   address : require('../assets/port06.jpg'),
@@ -68,23 +82,40 @@
     },
     methods : {
       addLike : function(index) {
-        if(this.photoMes[index].like) {
-          this.photoMes[index].photoLike -= 1;
+        if(this.$route.params.userId == 'visitor') {
+          this.$router.push('/login');
         }
         else {
-          this.photoMes[index].photoLike += 1;
-        }
-        var resource = this.$resource('http://localhost:3000/changeLikeNum');
-        var params = {id : this.photoMes[index].photoId, likeNum : this.photoMes[index].photoLike};
-        resource.save(params).then((response) => {
-          if(response.body.code != 200) {
-            alert(response.body.description);
+          if(this.photoMes[index].like) {
+            this.photoMes[index].photoLike -= 1;
+            var resource_1 = this.$resource('http://localhost:3000/cutLike');
+            var params_1 = {photoId : this.photoMes[index].photoId, userId : this.$route.params.userId};
           }
-        })
-        .catch((response) => {
-          console.log('err ' + response);
-        })
-        this.photoMes[index].like = !this.photoMes[index].like;
+          else {
+            this.photoMes[index].photoLike += 1;
+            var resource_1 = this.$resource('http://localhost:3000/addLike');
+            var params_1 = {photoId : this.photoMes[index].photoId, userId : this.$route.params.userId};
+          }
+          resource_1.save(params_1).then((response) => {
+            if(response.body.code != 200) {
+              alert(response.body.description);
+            }            
+          })
+          .catch((response) => {
+            console.log('err ' + response);
+          })
+          var resource = this.$resource('http://localhost:3000/changeLikeNum');
+          var params = {id : this.photoMes[index].photoId, likeNum : this.photoMes[index].photoLike};
+          resource.save(params).then((response) => {
+            if(response.body.code != 200) {
+              alert(response.body.description);
+            }
+          })
+          .catch((response) => {
+            console.log('err ' + response);
+          })
+          this.photoMes[index].like = !this.photoMes[index].like;         
+        }
       },
       openDetail : function() {
         this.showDetail = true;
