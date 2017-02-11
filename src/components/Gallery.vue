@@ -110,7 +110,7 @@
 				this.$router.push("/introduction/2");
 			},
 			topToIntroduction : function() {	
-				var route = '/gallery/' + this.$route.params.userId + '/introduction/1'
+				var route = '/gallery/' + this.$route.params.userId + '/introduction/' + this.$route.params.userId;
 				this.$router.push(route);
 			}
 		}

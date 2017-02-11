@@ -50,7 +50,8 @@
 				}
 				else {
 					var _this = this;
-					var params = { userId : this.userId, passWord : this.passWord, userName : this.name, userBirth : this.birthday, userSex : this.sex, userMotto : this.signature, avatar : Math.ceil(Math.random() * 5) };
+					var params = { userId : this.userId, passWord : this.passWord, userName : this.name, userBirth : this.birthday, userSex : this.sex, userMotto : this.signature, userAvatar : Math.ceil(Math.random() * 5) };
+					console.log(params.userAvatar);
 					var resource = this.$resource('http://localhost:3000/register');
 					resource.save(params).then((response) => {
 						if(response.body.code == 200) {

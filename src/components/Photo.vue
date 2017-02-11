@@ -34,10 +34,13 @@
       Detail
     },
     mounted : function() {
-       var _this = this;
-      // this.$nextTick(() => {
+        var _this = this;
+        var params = { userId : '' };
+        if(this.$route.params.introductionId != undefined) {
+          params.userId = this.$route.params.introductionId;
+        }
         var resource = this.$resource('http://localhost:3000/getPhoto');
-        resource.get().then((response) => {
+        resource.save(params).then((response) => {
           _this.photoMes = response.body.photo;
           for(var i in _this.photoMes) {
             _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
@@ -49,7 +52,8 @@
         })
         .catch((response) => {
           console.log('err ' + response);
-        })    
+        })  
+
         if(this.$route.params.userId !== 'visitor') {
           var resource_1 = this.$resource('http://localhost:3000/getLikePhoto');
           resource_1.save({userId : this.$route.params.userId}).then((response) => {
@@ -62,9 +66,8 @@
           .catch((response) => {
             console.log('err ' + response);
           })       
-        }         
-      // })
-    },
+        } 
+      },
     data () {
       return {
         showDetail : false,

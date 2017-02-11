@@ -2,31 +2,33 @@
 	<div>
 		<div class="introduction-container">
 			<div class="big-avatar">
-				<img src="../assets/avatar1.jpg" width="160px" height="160px">
+				<img :src="personAvatar" width="160px" height="160px">
 			</div>
 			<div class="introduction-mes">
-				<span class="name">飒然风影</span>
-				<span><i class="fa fa-male"></i></span>
-				<button class="edit-introduction" @click="showPerson = true">编辑个人信息</button>
+				<span class="name">{{ personName }}</span>
+				<span v-if="personSex == '男'"><i class="fa fa-male"></i></span>
+				<span v-else><i class="fa fa-female"></i></span>
+				<button class="edit-introduction" @click="showPerson = true" v-if="isSelf">编辑个人信息</button>
+				<button class="edit-introduction" v-else @click="attent">{{ isAttent }}</button>
 				<hr>
 				<div class="attention-fans">
 					<div class="attention-fans-block" @click="openAttention">
-						<p><strong>17</strong></p>
+						<p><strong>{{ personAttent }}</strong></p>
 						<p>关注</p>
 					</div>
 					<div class="attention-fans-block" @click="openFans">
-						<p><strong>9</strong></p>
+						<p><strong>{{ personFans }}</strong></p>
 						<p>粉丝</p>
 					</div>					
 				</div>
 				<div class="other-mes">
 					<div class="other-mes-block">
 						<label>个人介绍</label>
-						<span>半世浮萍随逝水, 一宵冷雨藏名花~</span>
+						<span>{{ personMotto }}</span>
 					</div>
 					<div class="other-mes-block">
 						<label>出生年月</label>
-						<span>1996-05-24</span>
+						<span>{{ personBirth }}</span>
 					</div>
 				</div>
 				<div class="like-photo">
@@ -63,6 +65,37 @@
 			Socialrelations,
 			Editperson
 		},
+		mounted : function() {
+			var _this = this;
+			var resource = this.$resource("http://localhost:3000/getPersonMes");
+			resource.save({ userId : this.$route.params.introductionId }).then((response) => {
+				_this.personName = response.body.userMes.userName;
+				_this.personSex = response.body.userMes.userSex;
+				_this.personBirth = response.body.userMes.userBirth;
+				_this.personMotto = response.body.userMes.userMotto;
+				_this.personAvatar = require('../assets/avatar' + response.body.userMes.userAvatar + '.jpg');
+				_this.personAttent = response.body.userMes.userAttent;
+				_this.personFans = response.body.userMes.userFans;
+			})
+			.catch((response) => {
+				console.log('err ' + response);
+			})
+			var resource_1 = this.$resource("http://localhost:3000/judgeAttention");
+			var params = { attentId : this.$route.params.userId, followedId : this.$route.params.introductionId };
+			resource_1.save(params).then((response) => {
+				if(response.body.result) {
+					_this.isAttent = '已关注';
+				}
+				else {
+					_this.isAttent = '关注';
+				}
+			})
+		},
+		computed: {
+			isSelf : function() {
+				return this.$route.params.userId == this.$route.params.introductionId;
+			}
+		},
 		data () {
 			return {
 				imgWidth : '360px',
@@ -70,6 +103,14 @@
 				showModal : false,
 				showPerson : false,
 				modalTitle : '飒然风影的关注',
+				personAvatar : require('../assets/avatar2.jpg'),
+				personName : '',
+				personSex : '',
+				personBirth : '',
+				personMotto : '',
+				personAttent : '',
+				personFans : '',
+				isAttent : '关注',
 				modalBody : [
 					{
 						avatar : require("../assets/avatar1.jpg"),
@@ -144,10 +185,20 @@
 			},
 			toIntroduction : function() {
 				this.$router.push("/introduction/1");
+			},
+			attent : function() {
+				var params = { attentId : this.$route.params.userId, followedId : this.$route.params.introductionId };
+				if(this.isAttent == '关注') {
+					var resource = this.$resource('http://localhost:3000/setAttent');
+					resource.save(params);	
+					this.isAttent = '已关注';			
+				}
+				else {
+					var resource = this.$resource('http://localhost:3000/cutAttent');
+					resource.save(params);	
+					this.isAttent = '关注';						
+				}
 			}
-		},
-		created : function() {
-			console.log(this.$route.params.id);
 		}
 	}
 </script>

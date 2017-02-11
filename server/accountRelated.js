@@ -62,7 +62,8 @@ exports.register = function(req, res) {
 						res.send(httpResult);
 					}
 					else {
-						var insertSql = "insert into userInfo value ('" + req.body.userId + "', '" + req.body.passWord + "', '" + req.body.userName + "', '" + req.body.userBirth + "', '" + req.body.userSex + "', '" + req.body.userMotto + "')";
+						console.log(req.body.userAvatar);
+						var insertSql = "insert into userInfo values ('" + req.body.userId + "', '" + req.body.passWord + "', '" + req.body.userName + "', '" + req.body.userBirth + "', '" + req.body.userSex + "', '" + req.body.userMotto + "', '" + req.body.userAvatar + "', '0', '0')";
 						conn.query(insertSql, function(err, results) {
 							if(err) {
 								httpResult.code = -1;
@@ -76,6 +77,7 @@ exports.register = function(req, res) {
 					}
 				}
 			});
+			conn.release();
 		}
 	});
 }

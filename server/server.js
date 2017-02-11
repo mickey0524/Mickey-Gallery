@@ -4,6 +4,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var accountRelated = require('./accountRelated');
 var galleryRelated = require('./galleryRelated');
+var introductionRelated = require('./introductionRelated');
 var app = express();
 
 // 跨域支持
@@ -40,7 +41,7 @@ app.post('/getUserAvatar', bodyParser.json(), function(req, res) {
 /**
  * 获取图片相关信息
  */
-app.get('/getPhoto', bodyParser.json(), function(req, res) {
+app.post('/getPhoto', bodyParser.json(), function(req, res) {
 	galleryRelated.getPhoto(req, res);
 })
 
@@ -65,10 +66,37 @@ app.post('/addLike', bodyParser.json(), function(req, res) {
 	galleryRelated.addLike(req, res);
 })
 
+/**
+ * 得到该id喜欢过的图片
+ */
 app.post('/getLikePhoto', bodyParser.json(), function(req, res) {
 	galleryRelated.getLikePhoto(req, res);
 })
- 
+
+/**
+ * 访问主页的时候，得到该用户信息
+ */
+app.post('/getPersonMes', bodyParser.json(), function(req, res) {
+	introductionRelated.getPersonMes(req, res);
+})
+
+/**
+ * 关注
+ */
+app.post('/setAttent', bodyParser.json(), function(req, res) {
+	introductionRelated.setAttent(req, res);
+})
+
+/**
+ * 取关
+ */
+app.post('/cutAttent', bodyParser.json(), function(req, res) {
+	introductionRelated.cutAttent(req, res);
+})
+
+app.post('/judgeAttention', bodyParser.json(), function(req, res) {
+	introductionRelated.judgeAttention(req, res);
+})
 
 app.listen(3000);
 console.log('server opening at localhost:3000');

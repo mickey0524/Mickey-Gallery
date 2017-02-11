@@ -42,13 +42,38 @@ exports.getPhoto = function(req, res) {
 				if(err) {
 					httpResult = -1;
 					httpResult.description = '数据库操作失败!';	
+					res.send(httpResult);
 				}
 				else {
 					httpResult.code = 200;
-					httpResult.photo = results;
+					for(var i in results) {
+						results[i].like = false;
+					}
+					if(req.body.userId == '') {
+						httpResult.photo = results;
+						res.send(httpResult);
+					}
+					else {
+						conn.query("select photoId from photolike where userId = '" + req.body.userId + "'", function(errLike, resultsLike) {
+							if(!errLike) {
+								var arr = [];
+								for(var i in resultsLike) {
+									arr.push(resultsLike[i].photoId);
+								}
+								for(var i = 0; i < results.length; i++) {
+									if(arr.indexOf(results[i].photoId) == -1) {
+										results.splice(i, 1);
+										i -= 1;
+									}
+								}
+								httpResult.photo = results;
+								res.send(httpResult);
+							}
+						})
+					}
+					
 				}
-				res.send(httpResult);
-			})
+			})				
 		}
 		conn.release();	
 	})
@@ -80,17 +105,14 @@ exports.changeLikeNum = function(req, res) {
 }
 
 exports.cutLike = function(req, res) {
-	//console.log('cut ' + req.body.photoId + ' ' + req.body.userId);
 	var httpResult = {};
 	pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
 			res.send(httpResult);
-			//console.log('cut');
 		}
 		else {
-			//console.log('cut~');
 			var deleteSql = "delete from photolike where photoId = '" + req.body.photoId + "' and userId = '" + req.body.userId + "'";
 			conn.query(deleteSql, function(err, results) {
 				if(err) {
@@ -108,17 +130,14 @@ exports.cutLike = function(req, res) {
 }
 
 exports.addLike = function(req, res) {
-	//console.log('add ' + req.body.photoId + ' ' + req.body.userId);
 	var httpResult = {};
 	pool.getConnection(function(err, conn) {
 		if(err) {
-			//console.log('add');
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
 			res.send(httpResult);
 		}
 		else {
-			//console.log('add~');
 			var insertSql = "insert into photolike values('" + req.body.photoId + "', '" + req.body.userId + "')";
 			conn.query(insertSql, function(err, results) {
 				if(err) {
@@ -158,8 +177,9 @@ exports.getLikePhoto = function(req, res) {
 						array.push(results[i].photoId);
 					}
 					httpResult.photo = array;
-					res.send(httpResult);
-				}		
+					res.send(httpResult);	
+				}	
+
 			})		
 		}
 		conn.release();	
