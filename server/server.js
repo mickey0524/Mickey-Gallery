@@ -5,6 +5,7 @@ var bodyParser = require('body-parser');
 var accountRelated = require('./accountRelated');
 var galleryRelated = require('./galleryRelated');
 var introductionRelated = require('./introductionRelated');
+var messageRelated = require('./messageRelated');
 var app = express();
 
 // 跨域支持
@@ -94,8 +95,39 @@ app.post('/cutAttent', bodyParser.json(), function(req, res) {
 	introductionRelated.cutAttent(req, res);
 })
 
+/**
+ * 判断是否关注了该用户
+ */
 app.post('/judgeAttention', bodyParser.json(), function(req, res) {
 	introductionRelated.judgeAttention(req, res);
+})
+
+/**
+ * get某个用户的关注列表
+ */
+app.post('/getAttent', bodyParser.json(), function(req, res) {
+	introductionRelated.getAttent(req, res);
+})
+
+/**
+ * get某个用户的粉丝列表
+ */
+app.post('/getFans', bodyParser.json(), function(req, res) {
+	introductionRelated.getFans(req, res);
+})
+
+/**
+ * get某张图片的评论
+ */
+app.post('/getComments', bodyParser.json(), function(req, res) {
+	messageRelated.getComments(req, res);
+})
+
+/**
+ * 发送评论
+ */
+app.post('/sendComment', bodyParser.json(), function(req, res) {
+	messageRelated.sendComment(req, res);
 })
 
 app.listen(3000);

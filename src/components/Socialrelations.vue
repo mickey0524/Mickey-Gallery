@@ -11,19 +11,19 @@
           			<div class="modal-body">
           				<div class="social-item" v-for="item in body">
           					<div class="social-avatar">
-          						<img :src="item.avatar" width="40px" height="40px">
+          						<img :src="item.userAvatar" width="40px" height="40px">
           					</div>
           					<div class="social-content">
-          						<p>{{ item.name }}</p>
-	          					<p>{{ item.signature }}</p>
+          						<p>{{ item.userName }}</p>
+	          					<p>{{ item.userMotto }}</p>
 	          					<div class="attention-fans">
 	          						<div class="attention-fans-item">
 	          							<label>关注: </label>
-	          							<span>{{ item.attentionNum }}</span>
+	          							<span>{{ item.userAttent }}</span>
 	          						</div>
 	          						<div class="attention-fans-item">
 	          							<label>粉丝: </label>
-	          							<span>{{ item.fansNum }}</span>
+	          							<span>{{ item.userFans }}</span>
 	          						</div>
 	          					</div>
 	          				</div>

@@ -16,13 +16,13 @@
               <i class="fa fa-heart-o" @click="addLike(index)" v-else></i>
               <span><strong>{{ photo.photoLike }}</strong> Likes<span>
               <i class="fa fa-commenting-o" @click="openDetail"></i>
-              <span @click="openDetail"><strong>{{ photo.photoComment }}</strong> Comments<span>
+              <span @click="openDetail(index)"><strong>{{ photo.photoComment }}</strong> Comments<span>
             </div>
           </figure>
         </li>
       </ul>
     </div>
-    <detail v-if="showDetail" @close="showDetail = false" @routeToIntroduction="routeToIntroduction"></detail>
+    <detail v-if="showDetail" @close="showDetail = false" @routeToIntroduction="routeToIntroduction" :photo-address="detailPhoto"></detail>
   </div>
 </template>
 
@@ -33,7 +33,7 @@
     components : {
       Detail
     },
-    mounted : function() {
+    created : function() {
         var _this = this;
         var params = { userId : '' };
         if(this.$route.params.introductionId != undefined) {
@@ -71,6 +71,7 @@
     data () {
       return {
         showDetail : false,
+        detailPhoto : '',
         photoMes : [      
           // {
           //   photoId : '6',
@@ -120,8 +121,14 @@
           this.photoMes[index].like = !this.photoMes[index].like;         
         }
       },
-      openDetail : function() {
-        this.showDetail = true;
+      openDetail : function(index) {
+        if(this.$route.params.userId == 'visitor') {
+          this.$router.push('/login');
+        }
+        else {
+          this.showDetail = true;
+          this.detailPhoto = this.photoMes[index].photoId;         
+        }
       },
       routeToIntroduction: function() {
         this.showDetail = false;

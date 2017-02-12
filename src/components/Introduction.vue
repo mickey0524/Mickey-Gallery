@@ -12,11 +12,11 @@
 				<button class="edit-introduction" v-else @click="attent">{{ isAttent }}</button>
 				<hr>
 				<div class="attention-fans">
-					<div class="attention-fans-block" @click="openAttention">
+					<div class="attention-fans-block" @click="openSocial(0)">
 						<p><strong>{{ personAttent }}</strong></p>
 						<p>关注</p>
 					</div>
-					<div class="attention-fans-block" @click="openFans">
+					<div class="attention-fans-block" @click="openSocial(1)">
 						<p><strong>{{ personFans }}</strong></p>
 						<p>粉丝</p>
 					</div>					
@@ -111,40 +111,7 @@
 				personAttent : '',
 				personFans : '',
 				isAttent : '关注',
-				modalBody : [
-					{
-						avatar : require("../assets/avatar1.jpg"),
-						name: 'Roger',
-						signature : '奇怪的感觉asdasda',
-						attentionNum : 9,
-						fansNum : 6,
-						isAttention : false
-					},
-					{
-						avatar : require("../assets/avatar2.jpg"),
-						name: 'Baihao',
-						signature : '半世浮萍随逝水~',
-						attentionNum : 5,
-						fansNum : 8,
-						isAttention : false						
-					},
-					{
-						avatar : require("../assets/avatar3.jpg"),
-						name: 'Roger',
-						signature : '奇怪的感觉',
-						attentionNum : 9,
-						fansNum : 6,
-						isAttention : false
-					},
-					{
-						avatar : require("../assets/avatar4.jpg"),
-						name: 'Baihao',
-						signature : '半世浮萍随逝水~',
-						attentionNum : 5,
-						fansNum : 8,
-						isAttention : false						
-					}
-				],
+				modalBody : [],
 				notifications : [
 					{
 						avatar : require('../assets/avatar1.jpg'),
@@ -175,12 +142,30 @@
 			}
 		},
 		methods : {
-			openFans : function() {
-				this.modalTitle = '飒然风影的粉丝';
-				this.showModal = true;
-			},
-			openAttention : function() {
-				this.modalTitle = '飒然风影的关注';
+			// openFans : function() {
+			// 	this.modalTitle = this.personName + '的粉丝';
+			// 	this.showModal = true;
+			// },
+			openSocial : function(index) {
+				if(index == 0) {
+					this.modalTitle = this.personName + '的关注';
+					var server = 'http://localhost:3000/getAttent';
+				}
+				else {
+					this.modalTitle = this.personName + '的粉丝';
+					var server = 'http://localhost:3000/getFans';					
+				}
+				var _this = this;
+				var resource = this.$resource(server);
+				resource.save({ userId : this.$route.params.introductionId }).then((response) => {
+					_this.modalBody = response.body.attention;
+					for(var i in _this.modalBody) {
+						_this.modalBody[i].userAvatar = require("../assets/avatar" + _this.modalBody[i].userAvatar + ".jpg");
+					}
+				})
+				.catch((response) => {
+					console.log('err ' + response);
+				})
 				this.showModal = true;
 			},
 			toIntroduction : function() {
