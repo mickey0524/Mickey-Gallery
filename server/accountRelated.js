@@ -1,8 +1,8 @@
-var pool = require('./databaseManager');
+var dataManage = require('./databaseManager');
 
 exports.judgeLanding = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -41,7 +41,7 @@ exports.judgeLanding = function(req, res) {
 
 exports.register = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
@@ -77,6 +77,17 @@ exports.register = function(req, res) {
 					}
 				}
 			});
+			conn.release();
+		}
+	});
+}
+
+exports.changePerson = function(req, res) {
+	var httpResult = {};
+	console.log('asda');
+	dataManage.pool.getConnection(function(err, conn) {
+		if(!err) {
+			conn.query("update userinfo set userName = '" + req.body.userName + "', userMotto = '" + req.body.userMotto + "', userSex = '" + req.body.userSex + "', userBirth = '" + req.body.userBirth + "' where userId = '" + req.body.userId + "'");
 			conn.release();
 		}
 	});

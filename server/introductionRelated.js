@@ -1,8 +1,8 @@
-var pool = require('./databaseManager');
+var dataManage = require('./databaseManager');
 
 exports.getPersonMes = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -28,7 +28,7 @@ exports.getPersonMes = function(req, res) {
 
 exports.judgeAttention = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -56,7 +56,7 @@ exports.judgeAttention = function(req, res) {
 exports.setAttent = function(req, res) {
 	//console.log('setAttent');
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -66,7 +66,16 @@ exports.setAttent = function(req, res) {
 			conn.query("update userinfo set userAttent = userAttent + 1 where userId = '" + req.body.attentId + "'");
 			conn.query("update userinfo set userFans = userFans + 1 where userId = '" + req.body.followedId + "'");
 			conn.query("insert into attention values ('" + req.body.attentId + "', '" + req.body.followedId + "')");
-			conn.release();
+			conn.query("select userName, userAvatar from userinfo where userId = '" + req.body.attentId + "'", function(err, results) {
+				if(!err) {
+					var content = results[0].userName + '关注了你~';
+					conn.query("insert into messages values ('" + req.body.followedId + "', '" + results[0].userName + "', '" + results[0].userAvatar + "', '" + dataManage.getNowFormatDate() + "', '" + content + "', '" + req.body.attentId + "')", function(messageErr, messageResult) {
+						if(!messageErr) {
+							conn.release();
+						}
+					});
+				}
+			});
 		}
 	});
 }
@@ -74,7 +83,7 @@ exports.setAttent = function(req, res) {
 exports.cutAttent = function(req, res) {
 	//console.log('cutAttent');
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -82,9 +91,18 @@ exports.cutAttent = function(req, res) {
 		}
 		else {
 			conn.query("update userinfo set userAttent = userAttent - 1 where userId = '" + req.body.attentId + "'");
-			conn.query("update userinfo set userFans = userFans - 1 where userId = '" + req.body.followedId + "'");
+			conn.query("update userinfo set userFans = userFans - 1 where userId = '" + req.bodyfollowedId + "'");
 			conn.query("delete from attention where attentId = '" + req.body.attentId + "' and followedId = '" + req.body.followedId + "'");
-			conn.release();
+			conn.query("select userName, userAvatar from userinfo where userId = '" + req.body.attentId + "'", function(err, results) {
+				if(!err) {
+					var content = results[0].userName + '取关了你~';
+					conn.query("insert into messages values ('" + req.body.followedId + "', '" + results[0].userName + "', '" + results[0].userAvatar + "', '" + dataManage.getNowFormatDate() + "', '" + content + "', '" + req.body.attentId + "')", function(messageErr, messageResult) {
+						if(!messageErr) {
+							conn.release();
+						}
+					});
+				}
+			});
 		}
 	});	
 }
@@ -92,7 +110,7 @@ exports.cutAttent = function(req, res) {
 exports.getAttent = function(req, res) {
 	//console.log('getAttent');
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -104,7 +122,7 @@ exports.getAttent = function(req, res) {
 					var result = [];
 					httpResult.code = 200;
 					for(var i in results) {
-						var selectSql = "select userAvatar, userName, userMotto, userAttent, userFans from userinfo where userId = '" + results[i].followedId + "'";
+						var selectSql = "select userAvatar, userName, userMotto, userAttent, userFans, userId from userinfo where userId = '" + results[i].followedId + "'";
 						conn.query(selectSql, function(selectErr, selectResult) {
 							if(!selectErr) {
 								result.push(selectResult[0]);
@@ -124,7 +142,7 @@ exports.getAttent = function(req, res) {
 
 exports.getFans = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -136,7 +154,7 @@ exports.getFans = function(req, res) {
 					var result = [];
 					httpResult.code = 200;
 					for(var i in results) {
-						var selectSql = "select userAvatar, userName, userMotto, userAttent, userFans from userinfo where userId = '" + results[i].attentId + "'";
+						var selectSql = "select userAvatar, userName, userMotto, userAttent, userFans, userId from userinfo where userId = '" + results[i].attentId + "'";
 						conn.query(selectSql, function(selectErr, selectResult) {
 							if(!selectErr) {
 								result.push(selectResult[0]);

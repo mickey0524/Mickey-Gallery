@@ -12,17 +12,17 @@
 				<div class="mes-title">
 					<h4>You have {{ mesNum }} new messages</h4>
 				</div>
-				<div v-for="item in message" class="mes-item">
+				<div v-for="(item, index) in message" class="mes-item">
 					<div class="mes-avatar">
-						<img :src="item.avatar" width="40px" height="40px" @click="toIntroduction">
+						<img :src="item.messageAvatar" width="40px" height="40px" @click="mesToIntroduction(index)">
 					</div>
 					<div class="mes-content">
-						<span><strong>{{ item.useName }}</strong></span>
-						<span class="mes-time"><strong>{{ item.time }}<strong></span>
-						<p>{{ item.content }}</p>
+						<span><strong>{{ item.messageName }}</strong></span>
+						<span class="mes-time"><strong>{{ item.messageTime }}<strong></span>
+						<p>{{ item.messageContent }}</p>
 					</div>
 				</div>
-				<div class="mes-more">
+				<div class="mes-more" @click="topToIntroduction">
 					See more messages
 				</div>
 			</div>
@@ -33,10 +33,11 @@
 			</div>
 			<router-link to="/login"><button v-if="!isLogin">Login</button></router-link>
 			<button v-if="isLogin" @click="$router.push('/gallery/visitor')">Unlogin</button>
+			<button @click="backToGallery">Gallery</button>
 		</div>
 		<div class="gallery-wrap">
 			<transition mode="out-in" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutRight">
-				<router-view @routeToIntroduction="toIntroduction"></router-view>
+				<router-view @routeToIntroduction="toIntroduction" @closeMesBox="mesBox=false"></router-view>
 			</transition>
 		</div>
 	</div>
@@ -59,6 +60,13 @@
 				})				
 			}
 		},
+		created : function() {
+			var _this = this;
+			_this.getMessage();
+			setInterval(function() {
+				_this.getMessage();
+			}, 60000 * 5);
+		},
 		components : {
 			Photo,
 			Introduction
@@ -72,46 +80,85 @@
 			return {
 				userAvatar : '',
 				mesBox : false,
-				mesNum : 5,
+				mesNum : 0,
+				lastPull : '0 0:0:0',
 				message: [
-					{
-						useName : 'Zac Snider',
-						time : 'Just now',
-						content : 'Hi mate, how is everything.',
-						avatar : require('../assets/avatar2.jpg')
-					},
-					{
-						useName : 'Divya Manian',
-						time : '40mins.',
-						content : 'Hi, I need your help with this.',
-						avatar : require('../assets/avatar3.jpg')
-					},
-					{
-						useName : 'Dan Rogers',
-						time : '2 hrs.',
-						content : 'Love your new Dashboard.',
-						avatar : require('../assets/avatar4.jpg')
-					},
-					{
-						useName : 'Dj Sherman',
-						time : '4 hrs',
-						content : 'please, answer asap.',
-						avatar : require('../assets/avatar5.jpg')
-					}
+					// {
+					// 	useName : 'Zac Snider',
+					// 	time : '2017-02-12 21:14:40',
+					// 	content : 'Hi mate, how is everything.',
+					// 	avatar : require('../assets/avatar2.jpg')
+					// },
 				]		
 			};
 		},
 		methods : {
 			openMesBox : function() {
 				this.mesBox = !this.mesBox;
+				if(!this.mesBox) {
+					this.message = [];
+					this.mesNum = 0;
+				}
+				// else {
+				// 	this.getMessage();
+				// }
 			},
-			toIntroduction : function() {
+			mesToIntroduction : function(index) {
 				this.mesBox = false;
-				this.$router.push("/introduction/2");
+				this.message = [];
+				this.mesNum = 0;
+				var route = '/gallery/' + this.$route.params.userId + '/introduction/' + this.message[index].messageId;
+				this.$router.push(route);
+			},
+			toIntroduction : function(userId) {
+				this.mesBox = false;
+				var route = '/gallery/' + this.$route.params.userId + '/introduction/' + userId;
+				this.$router.push(route);
 			},
 			topToIntroduction : function() {	
+				this.mesBox = false;
 				var route = '/gallery/' + this.$route.params.userId + '/introduction/' + this.$route.params.userId;
 				this.$router.push(route);
+			},
+			getMessage : function() {
+				console.log('message');
+				var _this = this;
+				var resource = this.$resource('http://localhost:3000/getMessages');
+				resource.save({ userId : this.$route.params.userId, lastPull : this.lastPull }).then((response) => {
+					_this.message = response.body.message;
+					_this.message.reverse();
+					if(_this.message.length > 4) {
+						_this.message.splice(4, _this.message.length - 4);
+					}
+					for(var i in _this.message) {
+						_this.message[i].messageAvatar = require('../assets/avatar' + _this.message[i].messageAvatar + '.jpg');
+					}
+					_this.mesNum = _this.message.length;
+					_this.lastPull = _this.getNowFormatDate();
+				})
+				.catch((response) => {
+					console.log('err ' + response);
+				})				
+			},
+			backToGallery : function() {
+				this.$router.push('/gallery/' + this.$route.params.userId);
+			},
+			getNowFormatDate : function() {
+			    var date = new Date();
+			    var seperator1 = "-";
+			    var seperator2 = ":";
+			    var month = date.getMonth() + 1;
+			    var strDate = date.getDate();
+			    if (month >= 1 && month <= 9) {
+			        month = "0" + month;
+			    }
+			    if (strDate >= 0 && strDate <= 9) {
+			        strDate = "0" + strDate;
+			    }
+			    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+			            + " " + date.getHours() + seperator2 + date.getMinutes()
+			            + seperator2 + date.getSeconds();
+			    return currentdate;
 			}
 		}
 	}

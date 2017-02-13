@@ -34,40 +34,8 @@
       Detail
     },
     created : function() {
-        var _this = this;
-        var params = { userId : '' };
-        if(this.$route.params.introductionId != undefined) {
-          params.userId = this.$route.params.introductionId;
-        }
-        var resource = this.$resource('http://localhost:3000/getPhoto');
-        resource.save(params).then((response) => {
-          _this.photoMes = response.body.photo;
-          for(var i in _this.photoMes) {
-            _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
-            _this.photoMes[i].indexAddress = '/src/assets/port' + _this.photoMes[i].photoId + '.jpg';
-            _this.photoMes[i].like = false;
-            _this.photoMes[i].photoLike = Number(_this.photoMes[i].photoLike);
-            _this.photoMes[i].photoComment = Number(_this.photoMes[i].photoComment);
-          }
-        })
-        .catch((response) => {
-          console.log('err ' + response);
-        })  
-
-        if(this.$route.params.userId !== 'visitor') {
-          var resource_1 = this.$resource('http://localhost:3000/getLikePhoto');
-          resource_1.save({userId : this.$route.params.userId}).then((response) => {
-            for(var i in _this.photoMes) {
-              if(response.body.photo.indexOf(_this.photoMes[i].photoId) != -1) {
-                _this.photoMes[i].like = true;
-              }
-            }
-          })
-          .catch((response) => {
-            console.log('err ' + response);
-          })       
-        } 
-      },
+      this.start();
+    },
     data () {
       return {
         showDetail : false,
@@ -130,9 +98,44 @@
           this.detailPhoto = this.photoMes[index].photoId;         
         }
       },
-      routeToIntroduction: function() {
+      routeToIntroduction: function(userId) {
         this.showDetail = false;
-        this.$emit('routeToIntroduction');
+        this.$emit('routeToIntroduction', userId);
+      },
+      start : function() {
+        var _this = this;
+        var params = { userId : '' };
+        if(this.$route.params.introductionId != undefined) {
+          params.userId = this.$route.params.introductionId;
+        }
+        var resource = this.$resource('http://localhost:3000/getPhoto');
+        resource.save(params).then((response) => {
+          _this.photoMes = response.body.photo;
+          for(var i in _this.photoMes) {
+            _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
+            _this.photoMes[i].indexAddress = '/src/assets/port' + _this.photoMes[i].photoId + '.jpg';
+            _this.photoMes[i].like = false;
+            _this.photoMes[i].photoLike = Number(_this.photoMes[i].photoLike);
+            _this.photoMes[i].photoComment = Number(_this.photoMes[i].photoComment);
+          }
+        })
+        .catch((response) => {
+          console.log('err ' + response);
+        })  
+
+        if(this.$route.params.userId !== 'visitor') {
+          var resource_1 = this.$resource('http://localhost:3000/getLikePhoto');
+          resource_1.save({userId : this.$route.params.userId}).then((response) => {
+            for(var i in _this.photoMes) {
+              if(response.body.photo.indexOf(_this.photoMes[i].photoId) != -1) {
+                _this.photoMes[i].like = true;
+              }
+            }
+          })
+          .catch((response) => {
+            console.log('err ' + response);
+          })       
+        }        
       }
     }
   }

@@ -102,11 +102,12 @@
 .notification-mes {
 	width: calc(100% - 50px);
 }
-.notification-mes p:first-child {
+.notification-mes span:last-of-type {
 	color: #6A6666;
 	font-style: italic;
+	float: right;
 }
-.notification-mes p:last-child {
+.notification-mes p {
 	color: #000;
 	word-break: normal;
 	word-wrap: break-word;

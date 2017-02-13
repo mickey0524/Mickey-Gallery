@@ -15,9 +15,9 @@
 						<p>精彩评论</p>
 						
 						<div class="detail-comments">
-							<div v-for="comment in comments" class="detail-item">
+							<div v-for="(comment, index) in comments" class="detail-item">
 								<div class="comment-avatar">
-									<img :src="comment.userAvatar" width="40px" height="40px" @click="$emit('routeToIntroduction')">
+									<img :src="comment.userAvatar" width="40px" height="40px" @click="routeToIntroduction(index)">
 								</div>
 								<div class="comment-content">
 									<span>{{ comment.userName }}</span>
@@ -114,6 +114,9 @@
 			            + " " + date.getHours() + seperator2 + date.getMinutes()
 			            + seperator2 + date.getSeconds();
 			    return currentdate;
+			},
+			routeToIntroduction : function(index) {
+				this.$emit('routeToIntroduction', this.comments[index].userId);
 			}
 		}
 	}

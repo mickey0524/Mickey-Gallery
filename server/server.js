@@ -130,5 +130,19 @@ app.post('/sendComment', bodyParser.json(), function(req, res) {
 	messageRelated.sendComment(req, res);
 })
 
+/**
+ * 获取消息
+ */
+app.post('/getMessages', bodyParser.json(), function(req, res) {
+	messageRelated.getMessages(req, res);
+})
+
+/**
+ * 修改用户信息
+ */
+app.post('/changePerson', bodyParser.json(), function(req, res) {
+	accountRelated.changePerson(req, res);
+})
+
 app.listen(3000);
 console.log('server opening at localhost:3000');

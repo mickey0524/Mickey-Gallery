@@ -38,20 +38,24 @@
 <script>
 	export default {
 		name : 'person',
+		props : ['personName', 'personMotto', 'personSex', 'personBirth'],
 		data () {
 			return {
-				name : '飒然风影',
-				motto : '半世浮萍随逝水，一宵冷雨葬名花',
-				sex : '男',
-				birthday : '1996-05-24'	
+				name : this.personName,
+				motto : this.personMotto,
+				sex : this.personSex,
+				birthday : this.personBirth
 			};
 		},
 		methods : {
 			save : function() {
-				this.$emit('close');
+				var resource = this.$resource('http://localhost:3000/changePerson');
+				var params = { userName : this.name, userMotto : this.motto, userSex : this.sex, userBirth : this.birthday, userId : this.$route.params.userId };
+				resource.save(params);
+				this.$emit('close', params);
 			},
 			cancel : function() {
-				this.$emit('close');
+				this.$emit('close', '');
 			}
 		}
 	}

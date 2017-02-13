@@ -1,8 +1,8 @@
-var pool = require('./databaseManager');
+var dataManage = require('./databaseManager');
 
 exports.getUserAvatar = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败！';
@@ -30,7 +30,7 @@ exports.getUserAvatar = function(req, res) {
 
 exports.getPhoto = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
@@ -81,7 +81,7 @@ exports.getPhoto = function(req, res) {
 
 exports.changeLikeNum = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
@@ -106,7 +106,7 @@ exports.changeLikeNum = function(req, res) {
 
 exports.cutLike = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
@@ -131,13 +131,25 @@ exports.cutLike = function(req, res) {
 
 exports.addLike = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';
 			res.send(httpResult);
 		}
 		else {
+			conn.query("select userId from photolike where photoId = '" + req.body.photoId + "'", function(err, results) {
+				if(!err) {
+					conn.query("select userName, userAvatar from userinfo where userId = '" + req.body.userId + "'", function(userErr, userResults) {
+						if(!userErr) {
+							for(var i in results) {
+								var content = userResults[0].userName + '喜欢了和您一样的图片~';
+								conn.query("insert into messages values ('" + results[i].userId + "', '" + userResults[0].userName + "', '" + userResults[0].userAvatar + "', '" + dataManage.getNowFormatDate() + "', '" + content + "', '" + req.body.userId + "')");							
+							}							
+						}
+					});
+				}
+			});
 			var insertSql = "insert into photolike values('" + req.body.photoId + "', '" + req.body.userId + "')";
 			conn.query(insertSql, function(err, results) {
 				if(err) {
@@ -156,7 +168,7 @@ exports.addLike = function(req, res) {
 
 exports.getLikePhoto = function(req, res) {
 	var httpResult = {};
-	pool.getConnection(function(err, conn) {
+	dataManage.pool.getConnection(function(err, conn) {
 		if(err) {
 			httpResult.code = -1;
 			httpResult.description = '数据库操作失败!';

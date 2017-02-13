@@ -36,7 +36,8 @@
 	border-radius: 4px;
 	cursor: pointer;
 	position: relative;
-	top: -3px;
+	top: -3px;;
+
 	margin-left: 20px;
 	transition: all .4s ease-in-out;
 	-webkit-transition: all .4s ease-in-out;
@@ -55,7 +56,7 @@
 	top: 61px;
 	left: 300px;
 	background: #F2F2F2;
-	width: 250px;
+	width: 300px;
 	font-size: 12px;
 	border-radius: 5px;
 }

@@ -9,9 +9,9 @@
           			</div>
 
           			<div class="modal-body">
-          				<div class="social-item" v-for="item in body">
+          				<div class="social-item" v-for="(item, index) in body">
           					<div class="social-avatar">
-          						<img :src="item.userAvatar" width="40px" height="40px">
+          						<img :src="item.userAvatar" width="40px" height="40px" @click="routeToInstruction(index)">
           					</div>
           					<div class="social-content">
           						<p>{{ item.userName }}</p>
@@ -44,7 +44,12 @@
 <script>
 	export default {
 		name : 'socialrelations',
-		props : ['title', 'body']
+		props : ['title', 'body'],
+    methods : {
+      routeToInstruction : function(index) {
+        this.$emit('routeToIntroduction', this.body[index].userId);
+      }
+    }
 	}
 </script>
 
