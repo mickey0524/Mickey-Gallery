@@ -127,7 +127,7 @@
 					}
 				})
 				var resource_2 = this.$resource('http://localhost:3000/getMessages');
-				resource_2.save({ userId : this.$route.params.introductionId, lastPull : '' }).then((response) => {
+				resource_2.save({ userId : this.$route.params.introductionId, variety : 'introduction', lastPull : this.getNowFormatDate() }).then((response) => {
 					//console.log(response.body.message);
 					_this.notifications = response.body.message;
 					_this.notifications.reverse();
@@ -170,14 +170,19 @@
 			},
 			attent : function() {
 				var params = { attentId : this.$route.params.userId, followedId : this.$route.params.introductionId };
+				var _this = this;
 				if(this.isAttent == '关注') {
 					var resource = this.$resource('http://localhost:3000/setAttent');
-					resource.save(params);	
+					resource.save(params).then((response) => {
+						_this.personFans += 1;
+					});	
 					this.isAttent = '已关注';			
 				}
 				else {
 					var resource = this.$resource('http://localhost:3000/cutAttent');
-					resource.save(params);	
+					resource.save(params).then((response) => {
+						_this.personFans -= 1;
+					});	
 					this.isAttent = '关注';						
 				}
 			},
@@ -194,6 +199,23 @@
 					this.personMotto = msg.userMotto;
 				} 
 				this.showPerson = false;
+			},
+			getNowFormatDate : function() {
+			    var date = new Date();
+			    var seperator1 = "-";
+			    var seperator2 = ":";
+			    var month = date.getMonth() + 1;
+			    var strDate = date.getDate();
+			    if (month >= 1 && month <= 9) {
+			        month = "0" + month;
+			    }
+			    if (strDate >= 0 && strDate <= 9) {
+			        strDate = "0" + strDate;
+			    }
+			    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
+			            + " " + date.getHours() + seperator2 + date.getMinutes()
+			            + seperator2 + date.getSeconds();
+			    return currentdate;
 			}
 		},
 		watch : {

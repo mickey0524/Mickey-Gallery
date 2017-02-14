@@ -38,6 +38,7 @@
 				var resource = this.$resource('http://localhost:3000/judgeLanding');
 				resource.save(param).then((response) => {
 					if(response.body.code == 200) {
+						sessionStorage.setItem('userId', _this.userId);
 						this.$router.push('/gallery/' + _this.userId);
 					}
 					else {

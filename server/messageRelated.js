@@ -75,7 +75,21 @@ exports.getMessages = function(req, res) {
 			conn.query("select messageName, messageAvatar, messageTime, messageContent, messageId from messages where userId = '" + req.body.userId + "'", function(err, results) {
 				if(!err) {
 					httpResult.code = 200;
-					if(req.body.lastPull == '') {
+					var lastyear = req.body.lastPull.split(' ');
+					lastyear = Number(dataManage.changeFormat(lastyear[0].split('-')).join(''));
+					for(var i = 0; i < results.length; i++) {
+						var resultyear = results[i].messageTime.split(' ');
+						resultyear = Number(dataManage.changeFormat(resultyear[0].split('-')).join(''));
+						//console.log(resultyear + ' ' + lastyear);
+						if(resultyear == lastyear) {
+							break;
+						}
+						else {
+							results.splice(i, 1);
+							i -= 1;
+						}
+					}
+					if(req.body.variety == 'introduction') {
 						httpResult.message = results;
 						res.send(httpResult);
 					}

@@ -71,6 +71,8 @@ exports.setAttent = function(req, res) {
 					var content = results[0].userName + '关注了你~';
 					conn.query("insert into messages values ('" + req.body.followedId + "', '" + results[0].userName + "', '" + results[0].userAvatar + "', '" + dataManage.getNowFormatDate() + "', '" + content + "', '" + req.body.attentId + "')", function(messageErr, messageResult) {
 						if(!messageErr) {
+							httpResult.code = 200;
+							res.send(httpResult);
 							conn.release();
 						}
 					});
@@ -91,13 +93,15 @@ exports.cutAttent = function(req, res) {
 		}
 		else {
 			conn.query("update userinfo set userAttent = userAttent - 1 where userId = '" + req.body.attentId + "'");
-			conn.query("update userinfo set userFans = userFans - 1 where userId = '" + req.bodyfollowedId + "'");
+			conn.query("update userinfo set userFans = userFans - 1 where userId = '" + req.body.followedId + "'");
 			conn.query("delete from attention where attentId = '" + req.body.attentId + "' and followedId = '" + req.body.followedId + "'");
 			conn.query("select userName, userAvatar from userinfo where userId = '" + req.body.attentId + "'", function(err, results) {
 				if(!err) {
 					var content = results[0].userName + '取关了你~';
 					conn.query("insert into messages values ('" + req.body.followedId + "', '" + results[0].userName + "', '" + results[0].userAvatar + "', '" + dataManage.getNowFormatDate() + "', '" + content + "', '" + req.body.attentId + "')", function(messageErr, messageResult) {
 						if(!messageErr) {
+							httpResult.code = 200;
+							res.send(httpResult);
 							conn.release();
 						}
 					});

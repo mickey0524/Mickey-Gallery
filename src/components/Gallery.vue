@@ -32,7 +32,7 @@
 				<i class="fa fa-arrow-right" @click="$router.go(1)"></i>
 			</div>
 			<router-link to="/login"><button v-if="!isLogin">Login</button></router-link>
-			<button v-if="isLogin" @click="$router.push('/gallery/visitor')">Unlogin</button>
+			<button v-if="isLogin" @click="unLogin">Unlogin</button>
 			<button @click="backToGallery">Gallery</button>
 		</div>
 		<div class="gallery-wrap">
@@ -60,6 +60,18 @@
 				})				
 			}
 		},
+		beforeRouteEnter(to, from, next) {
+			next(vm => {
+				if(sessionStorage.getItem('userId') == null) {
+					next('/gallery/visitor');
+				}
+				else {
+					if(sessionStorage.getItem('userId') != vm.$route.params.userId) {
+						next('/gallery/' + sessionStorage.getItem('userId'));
+					}
+				}
+			})
+		},
 		created : function() {
 			var _this = this;
 			_this.getMessage();
@@ -81,7 +93,7 @@
 				userAvatar : '',
 				mesBox : false,
 				mesNum : 0,
-				lastPull : '0 0:0:0',
+				lastPull : this.getNowFormatDate(1),
 				message: [
 					// {
 					// 	useName : 'Zac Snider',
@@ -93,6 +105,10 @@
 			};
 		},
 		methods : {
+			unLogin : function() {
+				this.$router.push('/gallery/visitor');
+				sessionStorage.removeItem('userId');
+			},
 			openMesBox : function() {
 				this.mesBox = !this.mesBox;
 				if(!this.mesBox) {
@@ -121,10 +137,9 @@
 				this.$router.push(route);
 			},
 			getMessage : function() {
-				console.log('message');
 				var _this = this;
 				var resource = this.$resource('http://localhost:3000/getMessages');
-				resource.save({ userId : this.$route.params.userId, lastPull : this.lastPull }).then((response) => {
+				resource.save({ userId : this.$route.params.userId, lastPull : this.lastPull, variety : 'gallery'}).then((response) => {
 					_this.message = response.body.message;
 					_this.message.reverse();
 					if(_this.message.length > 4) {
@@ -143,7 +158,7 @@
 			backToGallery : function() {
 				this.$router.push('/gallery/' + this.$route.params.userId);
 			},
-			getNowFormatDate : function() {
+			getNowFormatDate : function(variety) {
 			    var date = new Date();
 			    var seperator1 = "-";
 			    var seperator2 = ":";
@@ -154,6 +169,10 @@
 			    }
 			    if (strDate >= 0 && strDate <= 9) {
 			        strDate = "0" + strDate;
+			    }
+			    if(variety == 1) {
+			    	return date.getFullYear() + seperator1 + month + seperator1 + strDate
+			            + " 0:0:0";
 			    }
 			    var currentdate = date.getFullYear() + seperator1 + month + seperator1 + strDate
 			            + " " + date.getHours() + seperator2 + date.getMinutes()
