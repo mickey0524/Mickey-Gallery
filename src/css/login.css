@@ -23,7 +23,7 @@
 	border-radius: 4px;
 }
 .register {
-	height: 520px;
+	height: 580px;
 }
 .title {
 	background: #68DFF0;
@@ -87,4 +87,21 @@
 .wrap .registration a, .wrap .signIn a {
 	color: #5193EA;
 	text-decoration: none;
+}
+
+.wrap .avatar {
+	text-align: center;
+}
+.wrap .avatar button, .wrap .avatar img {
+	display: inline-block;
+	vertical-align: top;
+}
+
+.wrap .avatar img {
+	border-radius: 100%;
+}
+
+.wrap .avatar button {
+	margin-top: 3px;
+	width: 30%;
 }

@@ -92,6 +92,14 @@
   -moz-transition: all .4s ease;
 }
 
+.person-body .person-item img {
+  border-radius: 100%;
+  vertical-align: middle;
+  text-align: center;
+  margin-left: 35%;
+  cursor: pointer;
+}
+
 .person-body .person-item input:focus {
   border-color: #68DFF0;
 }

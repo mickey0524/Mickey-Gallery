@@ -144,5 +144,13 @@ app.post('/changePerson', bodyParser.json(), function(req, res) {
 	accountRelated.changePerson(req, res);
 })
 
+app.post('/changePhoto', bodyParser.json(), function(req, res) {
+	accountRelated.changePhoto(req, res);
+})
+
+app.post('/deleteZanshi', bodyParser.json(), function(req, res) {
+	accountRelated.deleteZanshi(req, res);
+})
+
 app.listen(3000);
 console.log('server opening at localhost:3000');

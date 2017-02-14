@@ -4,7 +4,7 @@
 			<div class="title">
 				<h2>sign in now</h2>
 			</div>
-			<div class="wrap">
+			<div class="wrap" @keyup.enter="signIn">
 			    <input type="text" placeholder="User ID" autofocus v-model="userId">
 			    <input type="password" placeholder="Password" v-model="passWord">
 		        <router-link to="/gallery/visitor"><p class="right" @click="visitorIn">as a visitor?</p></router-link>

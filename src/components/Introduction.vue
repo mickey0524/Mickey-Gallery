@@ -50,7 +50,7 @@
 			</div>
 		</div>
 		<socialrelations v-if="showModal" @close="showModal = false" :title="modalTitle" :body="modalBody" @routeToIntroduction="toIntroduction"></socialrelations>
-		<editperson v-if="showPerson" @close="changeperson" :person-name="personName" :person-motto="personMotto" :person-sex="personSex" :person-birth="personBirth"></editperson> 
+		<editperson v-if="showPerson" @close="changeperson" :person-name="personName" :person-motto="personMotto" :person-sex="personSex" :person-birth="personBirth" :person-avatar="personAvatarNum"></editperson> 
 	</div>
 </template>
 
@@ -82,6 +82,7 @@
 				showPerson : false,
 				modalTitle : '飒然风影的关注',
 				personAvatar : require('../assets/avatar2.jpg'),
+				personAvatarNum : '',
 				personName : '',
 				personSex : '',
 				personBirth : '',
@@ -110,6 +111,7 @@
 					_this.personBirth = response.body.userMes.userBirth;
 					_this.personMotto = response.body.userMes.userMotto;
 					_this.personAvatar = require('../assets/avatar' + response.body.userMes.userAvatar + '.jpg');
+					_this.personAvatarNum = response.body.userMes.userAvatar;
 					_this.personAttent = response.body.userMes.userAttent;
 					_this.personFans = response.body.userMes.userFans;
 				})
@@ -199,6 +201,7 @@
 					this.personMotto = msg.userMotto;
 				} 
 				this.showPerson = false;
+				this.startComponent();
 			},
 			getNowFormatDate : function() {
 			    var date = new Date();

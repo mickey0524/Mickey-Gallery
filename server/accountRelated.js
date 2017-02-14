@@ -1,4 +1,6 @@
 var dataManage = require('./databaseManager');
+var fs = require('fs');
+var multiparty = require('multiparty');
 
 exports.judgeLanding = function(req, res) {
 	var httpResult = {};
@@ -84,11 +86,81 @@ exports.register = function(req, res) {
 
 exports.changePerson = function(req, res) {
 	var httpResult = {};
-	console.log('asda');
 	dataManage.pool.getConnection(function(err, conn) {
 		if(!err) {
 			conn.query("update userinfo set userName = '" + req.body.userName + "', userMotto = '" + req.body.userMotto + "', userSex = '" + req.body.userSex + "', userBirth = '" + req.body.userBirth + "' where userId = '" + req.body.userId + "'");
 			conn.release();
 		}
 	});
+	if(fs.existsSync('../src/assets/zanshi' + req.body.userId + '.jpg')) {
+		//console.log(req.body.userAvatar);
+		fs.unlink('../src/assets/avatar' + req.body.userAvatar + '.jpg');
+		fs.rename('../src/assets/zanshi' + req.body.userId + '.jpg', '../src/assets/avatar' + req.body.userAvatar + '.jpg');
+	}
+}
+
+exports.changePhoto = function(req, res) {
+	var httpResult = {};
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files){
+        //将前台传来的base64数据去掉前缀
+        var imgData = req.body.photoBase.replace(/^data:image\/\w+;base64,/, '');
+
+        var dataBuffer = new Buffer(imgData, 'base64');
+        //写入文件
+        if(req.body.variety == 'zanshi') {
+        	// var name = '';
+        	// if(fs.existsSync('../src/assets/zanshi' + req.body.userId +'.jpg')) {
+        	// 	name = 'zanshi1';
+        	// 	//fs.unlink('../src/assets/zanshi' + req.body.userId + '.jpg');
+        	// }
+        	// else {
+        	// 	name = 'zanshi';
+        	// 	if(fs.existsSync('../src/assets/zanshi1' + req.body.userId +'.jpg')) {
+        	// 		fs.unlink('../src/assets/zanshi1' + req.body.userId + '.jpg');
+        	// 	}
+        	// }
+	        fs.writeFile('../src/assets/zanshi' + req.body.userId +'.jpg', dataBuffer, function(err){
+	            if(err) {
+	                res.send(err);
+	            }
+	            else {
+	            	httpResult.code = 200;
+	            	httpResult.imgAddress = 'zanshi';
+	            	setTimeout(function() {
+	            		res.send(httpResult);
+	            	}, 1000);
+	                
+	            }
+	        });        	
+        }
+        else {
+	        dataManage.pool.getConnection(function(err, conn) {
+	        	if(!err) {
+	        		conn.query("select max(userAvatar) as userAvatar from userinfo", function(err, results) {
+	        			if(!err) {
+	        				var name = Number(results[0].userAvatar) + 1;
+					        fs.writeFile('../src/assets/avatar' + name + '.jpg', dataBuffer, function(err){
+					            if(err) {
+					                res.send(err);
+					            }
+					            else {
+					            	httpResult.code = 200;
+					            	httpResult.imgAddress = name;
+					                res.send(httpResult);
+					            }
+					        });
+	        			}
+	        		});
+	        		conn.release();
+	        	}
+	        });       	
+        }
+    });
+}
+
+exports.deleteZanshi = function(req, res) {
+	if(fs.existsSync('../src/assets/zanshi' + req.body.userId + '.jpg')) {
+		fs.unlink('../src/assets/zanshi' + req.body.userId + '.jpg');
+	}
 }
