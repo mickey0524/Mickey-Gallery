@@ -34,6 +34,8 @@
 			<router-link to="/login"><button v-if="!isLogin">Login</button></router-link>
 			<button v-if="isLogin" @click="unLogin">Unlogin</button>
 			<button @click="backToGallery">Gallery</button>
+			<button @click="uploadPhoto">upLoad</button>
+			<input type="file" id="photo" @change="photoUpload" style="display:none;">
 		</div>
 		<div class="gallery-wrap">
 			<transition mode="out-in" enter-active-class="animated slideInLeft" leave-active-class="animated slideOutRight">
@@ -115,9 +117,6 @@
 					this.message = [];
 					this.mesNum = 0;
 				}
-				// else {
-				// 	this.getMessage();
-				// }
 			},
 			mesToIntroduction : function(index) {
 				this.mesBox = false;
@@ -178,6 +177,25 @@
 			            + " " + date.getHours() + seperator2 + date.getMinutes()
 			            + seperator2 + date.getSeconds();
 			    return currentdate;
+			},
+			uploadPhoto : function() {
+				if(sessionStorage.getItem('userId') != undefined) {
+					document.getElementById('photo').click();
+				}
+			},
+			photoUpload : function(e) {
+				var file = e.target.files || e.dataTransfer.files;
+				var reader = new FileReader();
+				var vm = this;
+				reader.readAsDataURL(file[0]);
+				reader.onload = function(e) {
+					var resource = vm.$resource('http://localhost:3000/uploadPhoto');
+					resource.save({ photoBase : e.target.result }).then((response) => {
+						//console.log(vm.$children);
+						//vm.avatar = require('../assets/' + response.body.imgAddress + vm.$route.params.userId + '.jpg');
+						// vm.$children[1].start();
+					})
+				}
 			}
 		}
 	}

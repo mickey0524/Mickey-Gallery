@@ -9,7 +9,7 @@
         <li v-for="(photo, index) in photoMes">
           <figure class="photo-item">
             <a class="fancybox" :href="photo.indexAddress">
-              <img :src="photo.address" :width="imgWidth" :height="imgHeight">
+              <img :src="photo.address" :width="width" :height="height">
             </a>
             <div class="operation">
               <i class="fa fa-heart" @click="addLike(index)" v-if="photo.like"></i>
@@ -40,6 +40,8 @@
       return {
         showDetail : false,
         detailPhoto : '',
+        width : this.imgWidth || '400px',
+        height : this.imgHeight || '273px',
         photoMes : [      
           // {
           //   photoId : '6',
@@ -126,9 +128,11 @@
         if(this.$route.params.userId !== 'visitor') {
           var resource_1 = this.$resource('http://localhost:3000/getLikePhoto');
           resource_1.save({userId : this.$route.params.userId}).then((response) => {
+            //console.log(response.body);
             for(var i in _this.photoMes) {
               if(response.body.photo.indexOf(_this.photoMes[i].photoId) != -1) {
                 _this.photoMes[i].like = true;
+
               }
             }
           })
@@ -148,9 +152,6 @@
   * {
     font-family: 'Ruda', 'Microsoft Yahei', 'Arial', sans-serif;
   }
-  .photo-container {
-    text-align: center;
-  }
   .gallery-title {
     text-align: left;
   }
@@ -158,7 +159,16 @@
     display: inline-block;
     list-style: none;
     margin: 10px;
+/*    text-align: left;*/
   }
+  #photo {
+    text-align: left;
+    margin-left: 1%;
+  }
+/*  .photo-item {
+    display: inline-block;
+    text-align: left;
+  }*/
   .operation {
     text-align: left;
     color: #000;

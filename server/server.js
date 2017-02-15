@@ -152,5 +152,9 @@ app.post('/deleteZanshi', bodyParser.json(), function(req, res) {
 	accountRelated.deleteZanshi(req, res);
 })
 
+app.post('/uploadPhoto', bodyParser.json(), function(req, res) {
+	galleryRelated.uploadPhoto(req, res);
+})
+
 app.listen(3000);
 console.log('server opening at localhost:3000');

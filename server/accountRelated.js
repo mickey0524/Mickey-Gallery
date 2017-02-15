@@ -109,30 +109,25 @@ exports.changePhoto = function(req, res) {
         var dataBuffer = new Buffer(imgData, 'base64');
         //写入文件
         if(req.body.variety == 'zanshi') {
-        	// var name = '';
-        	// if(fs.existsSync('../src/assets/zanshi' + req.body.userId +'.jpg')) {
-        	// 	name = 'zanshi1';
-        	// 	//fs.unlink('../src/assets/zanshi' + req.body.userId + '.jpg');
-        	// }
-        	// else {
-        	// 	name = 'zanshi';
-        	// 	if(fs.existsSync('../src/assets/zanshi1' + req.body.userId +'.jpg')) {
-        	// 		fs.unlink('../src/assets/zanshi1' + req.body.userId + '.jpg');
-        	// 	}
-        	// }
-	        fs.writeFile('../src/assets/zanshi' + req.body.userId +'.jpg', dataBuffer, function(err){
-	            if(err) {
-	                res.send(err);
-	            }
-	            else {
-	            	httpResult.code = 200;
-	            	httpResult.imgAddress = 'zanshi';
-	            	setTimeout(function() {
-	            		res.send(httpResult);
-	            	}, 1000);
-	                
-	            }
-	        });        	
+        	dataManage.pool.getConnection(function(err, conn) { 
+        		if(!err) {
+        			conn.query("select userAvatar from userinfo where userId = '" + req.body.userId + "'", function(err, results) {
+        				if(!err) {
+					        fs.writeFile('../src/assets/avatar' + results[0].userAvatar +'.jpg', dataBuffer, function(err){
+					            if(err) {
+					                res.send(err);
+					            }
+					            else {
+					            	httpResult.code = 200;
+					            	res.send(httpResult);
+					            }
+					        });
+        				}
+        			});
+        			conn.release();
+        		}
+        	})
+        	
         }
         else {
 	        dataManage.pool.getConnection(function(err, conn) {

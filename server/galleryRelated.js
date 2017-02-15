@@ -1,4 +1,6 @@
 var dataManage = require('./databaseManager');
+var fs = require('fs');
+var multiparty = require('multiparty');
 
 exports.getUserAvatar = function(req, res) {
 	var httpResult = {};
@@ -196,4 +198,35 @@ exports.getLikePhoto = function(req, res) {
 		}
 		conn.release();	
 	})
+}
+
+exports.uploadPhoto = function(req, res) {
+	var httpResult = {};
+    var form = new multiparty.Form();
+    form.parse(req, function(err, fields, files){
+        //将前台传来的base64数据去掉前缀
+        var imgData = req.body.photoBase.replace(/^data:image\/\w+;base64,/, '');
+        var dataBuffer = new Buffer(imgData, 'base64');
+        dataManage.pool.getConnection(function(err, conn) {
+        	if(!err) {
+        		conn.query("select max(photoId) as photoId from photo", function(err, results) {
+        			if(!err) {
+        				var id = Number(results[0].photoId) + 1;
+        				console.log(id);
+				        fs.writeFile('../src/assets/port' + id +'.jpg', dataBuffer, function(err){
+				            if(err) {
+				                res.send(err);
+				            }
+				            else {
+				            	conn.query("insert into photo values ('" + id + "', '0', '0')");
+				            	httpResult.code = 200;
+				            	res.send(httpResult);
+				            }
+				        });       				
+        			}
+        		});
+        		conn.release();
+        	}
+        });	
+    });
 }

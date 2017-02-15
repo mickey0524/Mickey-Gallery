@@ -44,6 +44,9 @@
 	export default {
 		name : 'person',
 		props : ['personName', 'personMotto', 'personSex', 'personBirth', 'personAvatar'],
+		// mounted : function() {
+		// 	console.log('asda');
+		// },
 		data () {
 			return {
 				name : this.personName,
@@ -84,10 +87,7 @@
 					reader.readAsDataURL(file[0]);
 					reader.onload = function(e) {
 						var resource = vm.$resource('http://localhost:3000/changePhoto');
-						resource.save({ photoBase : e.target.result, variety : 'zanshi', userId : vm.$route.params.userId }).then((response) => {
-							//vm.avatar = require('../assets/avatar1.jpg');
-							vm.avatar = require('../assets/' + response.body.imgAddress + vm.$route.params.userId + '.jpg');
-						})
+						resource.save({ photoBase : e.target.result, variety : 'zanshi', userId : vm.$route.params.userId });
 					}
 				}
 			},
