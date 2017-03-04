@@ -75,10 +75,11 @@ exports.getPhoto = function(req, res) {
 					}
 					
 				}
-			})				
+			});
+			conn.release();			
 		}
-		conn.release();	
-	})
+		
+	});
 }
 
 exports.changeLikeNum = function(req, res) {
