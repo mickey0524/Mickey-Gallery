@@ -92,11 +92,11 @@ exports.changePerson = function(req, res) {
 			conn.release();
 		}
 	});
-	if(fs.existsSync('../src/assets/zanshi' + req.body.userId + '.jpg')) {
-		//console.log(req.body.userAvatar);
-		fs.unlink('../src/assets/avatar' + req.body.userAvatar + '.jpg');
-		fs.rename('../src/assets/zanshi' + req.body.userId + '.jpg', '../src/assets/avatar' + req.body.userAvatar + '.jpg');
-	}
+	// if(fs.existsSync('../src/assets/zanshi' + req.body.userId + '.jpg')) {
+	// 	//console.log(req.body.userAvatar);
+	// 	fs.unlink('../src/assets/avatar' + req.body.userAvatar + '.jpg');
+	// 	fs.rename('../src/assets/zanshi' + req.body.userId + '.jpg', '../src/assets/avatar' + req.body.userAvatar + '.jpg');
+	// }
 }
 
 exports.changePhoto = function(req, res) {
@@ -113,13 +113,18 @@ exports.changePhoto = function(req, res) {
         		if(!err) {
         			conn.query("select userAvatar from userinfo where userId = '" + req.body.userId + "'", function(err, results) {
         				if(!err) {
-					        fs.writeFile('../src/assets/avatar' + results[0].userAvatar +'.jpg', dataBuffer, function(err){
+					        fs.writeFile('../src/assets/avatar' + results[0].userAvatar +'zanshi.jpg', dataBuffer, function(err){
 					            if(err) {
 					                res.send(err);
 					            }
 					            else {
 					            	httpResult.code = 200;
-					            	res.send(httpResult);
+					            	var timer = setInterval(function() {
+					            		if(fs.existsSync('../src/assets/avatar' + results[0].userAvatar + 'zanshi.jpg')) {
+					            			clearInterval(timer);
+					            			res.send(httpResult);
+					            		}
+					            	}, 1000);
 					            }
 					        });
         				}
@@ -142,7 +147,12 @@ exports.changePhoto = function(req, res) {
 					            else {
 					            	httpResult.code = 200;
 					            	httpResult.imgAddress = name;
-					                res.send(httpResult);
+					            	var timer = setInterval(function() {
+					            		if(fs.existsSync('../src/assets/avatar' + name + '.jpg')) {
+					            			clearInterval(timer);
+					            			res.send(httpResult);
+					            		}
+					            	}, 1000);
 					            }
 					        });
 	        			}
@@ -155,7 +165,16 @@ exports.changePhoto = function(req, res) {
 }
 
 exports.deleteZanshi = function(req, res) {
-	if(fs.existsSync('../src/assets/zanshi' + req.body.userId + '.jpg')) {
-		fs.unlink('../src/assets/zanshi' + req.body.userId + '.jpg');
+	if(req.body.status === 'delete') {
+		fs.unlink('../src/assets/avatar' + req.body.userId + '.jpg', function(err) {
+			if(!err) {
+				fs.rename('../src/assets/avatar' + req.body.userId + 'zanshi.jpg', '../src/assets/avatar' + req.body.userId + '.jpg');
+			}
+		})
+	}
+	else {
+		if(fs.existsSync('../src/assets/avatar' + req.body.userId + 'zanshi.jpg')) {
+			fs.unlink('../src/assets/avatar' + req.body.userId + 'zanshi.jpg');
+		}		
 	}
 }

@@ -7,7 +7,7 @@
 			<div class="wrap">
 				<div class="avatar">
 					<img :src="image" v-if="image != ''" width="40px" height="40px">
-					<button @click="addAvatar">选择头像</button>
+					<button @click="addAvatar" v-if="avatar">选择头像</button>
 				</div>
 				<input type="file" style="display: none;" @change="onFileChange" id="fileInput">
 			    <input type="text" placeholder="User ID" autofocus v-model="userId">
@@ -43,7 +43,8 @@
 				name : '',
 				birthday : '',
 				sex : '',
-				signature : ''
+				signature : '',
+				avatar: true
 			}
 		},
 		methods : {
@@ -64,9 +65,11 @@
 					reader.readAsDataURL(file[0]);
 					reader.onload = function(e) {
 						var resource = vm.$resource('http://localhost:3000/changePhoto');
-						resource.save({ photoBase : e.target.result }).then((response) => {
+						resource.save({ photoBase : e.target.result, variety: '' }).then((response) => {
+							console.log(response.body.imgAddress);
 							vm.imageNum = response.body.imgAddress;
 							vm.image = require('../assets/avatar' + response.body.imgAddress + '.jpg');
+							vm.avatar = false;
 						})
 					}
 				}

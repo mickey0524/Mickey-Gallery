@@ -45,15 +45,16 @@
 		name : 'person',
 		props : ['personName', 'personMotto', 'personSex', 'personBirth', 'personAvatar'],
 		// mounted : function() {
-		// 	console.log('asda');
-		// },
+		// 	console.log(this.$store.state.count);
+		//  },
 		data () {
 			return {
 				name : this.personName,
 				motto : this.personMotto,
 				sex : this.personSex,
 				birthday : this.personBirth,
-				avatar : require('../assets/avatar' + this.personAvatar + '.jpg')
+				avatar : require('../assets/avatar' + this.personAvatar + '.jpg'),
+				ischangeAvatar : false
 			};
 		},
 		methods : {
@@ -61,12 +62,15 @@
 				var resource = this.$resource('http://localhost:3000/changePerson');
 				var params = { userAvatar : this.personAvatar, userName : this.name, userMotto : this.motto, userSex : this.sex, userBirth : this.birthday, userId : this.$route.params.userId };
 				resource.save(params);
+				if(this.ischangeAvatar) {
+					params.changeAvatar = true;
+				}
 				this.$emit('close', params);
 			},
 			cancel : function() {
 				if(this.avatar != this.personAvatar) {
 					var resource = this.$resource('http://localhost:3000/deleteZanshi');
-					resource.save({ userId : this.$route.params.userId });
+					resource.save({ userId : this.personAvatar, status : '' });
 				}
 				this.$emit('close', '');
 			},
@@ -87,7 +91,10 @@
 					reader.readAsDataURL(file[0]);
 					reader.onload = function(e) {
 						var resource = vm.$resource('http://localhost:3000/changePhoto');
-						resource.save({ photoBase : e.target.result, variety : 'zanshi', userId : vm.$route.params.userId });
+						resource.save({ photoBase : e.target.result, variety : 'zanshi', userId : vm.$route.params.userId }).then((response) => {
+							vm.avatar = require('../assets/avatar' + vm.personAvatar + 'zanshi.jpg');
+							vm.ischangeAvatar = true;
+						});
 					}
 				}
 			},

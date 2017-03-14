@@ -112,6 +112,7 @@
         }
         var resource = this.$resource('http://localhost:3000/getPhoto');
         resource.save(params).then((response) => {
+        	console.log(response.body);
           _this.photoMes = response.body.photo;
           for(var i in _this.photoMes) {
             _this.photoMes[i].address = require('../assets/port' + _this.photoMes[i].photoId + '.jpg');
@@ -159,16 +160,11 @@
     display: inline-block;
     list-style: none;
     margin: 10px;
-/*    text-align: left;*/
   }
   #photo {
     text-align: left;
     margin-left: 1%;
   }
-/*  .photo-item {
-    display: inline-block;
-    text-align: left;
-  }*/
   .operation {
     text-align: left;
     color: #000;

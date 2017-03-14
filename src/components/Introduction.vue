@@ -199,9 +199,13 @@
 					this.personSex = msg.userSex;
 					this.personBirth = msg.userBirth;
 					this.personMotto = msg.userMotto;
+					if(msg.changeAvatar) {
+						var resource = this.$resource('http://localhost:3000/deleteZanshi');
+						resource.save({ userId : msg.userAvatar, status : 'delete' });
+					}
 				} 
 				this.showPerson = false;
-				this.startComponent();
+				// this.startComponent();
 			},
 			getNowFormatDate : function() {
 			    var date = new Date();
