@@ -1,13 +1,13 @@
 # Mickey-Gallery
 基于Vue.js和nodejs的一个图片鉴赏网站
 
-##主要技术栈
-1.vuejs2.0
-2.vue-resource
-3.vue-router
-4.nodejs(express)
+## 主要技术栈
+1. vuejs2.0
+2. vue-resource
+3. vue-router
+4. nodejs(express)
 
-##项目截图
+## 项目截图
 1.登陆界面
 ![login.png](http://upload-images.jianshu.io/upload_images/4761068-5b7dbcc529851531.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 2.注册界面
@@ -25,14 +25,14 @@
 8.用户修改个人信息界面
 ![修改信息.png](http://upload-images.jianshu.io/upload_images/4761068-c7887c558f79bd1e.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1240)
 
-##如何使用
-1.下载或者clone到本地目录
-2.cd 到server目录
-3.npm install 安装依赖
-4.node server.js开启服务器
-5.cd 到项目根目录
-6.npm install 安装vuejs等依赖
-7.npm run dev
+## 如何使用
+1. 下载或者clone到本地目录
+2. cd 到server目录
+3. npm install 安装依赖
+4. node server.js开启服务器
+5. cd 到项目根目录
+6. npm install 安装vuejs等依赖
+7. npm run dev
 
 
 
